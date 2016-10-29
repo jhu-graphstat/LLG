@@ -1,16 +1,16 @@
 
 # args <- commandArgs(trailingOnly = TRUE)
 
-setwd("/Users/Runze/Documents/GitHub/LLG/Code/R")
+# setwd("/Users/Runze/Documents/GitHub/LLG/Code/R")
 # setwd("E:/GitHub/LLG/Code/R")
-# setwd("/cis/home/rtang/LLG/Code/R")
+setwd("/cis/home/rtang/LLG/Code/R")
 
 # m = as.numeric(args[1])
 # m = 1
 # isSVD = 1
 
-mVec = c(1, 5, 10)
-# mVec = 1:10
+# mVec = c(1, 5, 10)
+mVec = 10
 
 for (m in mVec) {
   for (isSVD in 0) {
@@ -18,7 +18,7 @@ for (m in mVec) {
     print(c(m, isSVD))
     
     nIter = 500
-    nCores = 2
+    nCores = 12
     
     dataName = "CPAC200"
 #         dataName = "desikan"
