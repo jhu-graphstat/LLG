@@ -1,6 +1,6 @@
 rm(list = ls())
 # setwd("E:/GitHub/LLG/Code/R")
-setwd("/Users/Runze/Documents/GitHub/LLG/Code/R")
+# setwd("/Users/Runze/Documents/GitHub/LLG/Code/R")
 # setwd("/cis/home/rtang/LLG/Code/R")
 
 lSize = .8
@@ -80,7 +80,7 @@ error_by_dim_df <- rbind(
   data.frame(mse=errorAbarMean,lci=errorAbarLower,uci=errorAbarUpper,
              which="Abar",m=mVec,d=n),
   data.frame(mse=errorAbarMean,lci=errorAbarLower,uci=errorAbarUpper,
-             which="Abar",m=mVec,d=1),
+             which="Abar",m=mVec,d=2),
   data.frame(mse=c(errorPhatEIGMean),lci=c(errorPhatEIGLower),uci=c(errorPhatEIGUpper),
              which="Phat",m=rep(mVec,n),d=rep(1:n,each=3))) %>%
   mutate(m=factor(paste0("M=",m),c("M=1","M=5","M=10")))
@@ -94,24 +94,33 @@ dim_selection_df <- rbind(
 
 label_y <- with(error_by_dim_df, .75*max(mse)+.25*min(mse))
 
-gg <- ggplot(error_by_dim_df,aes(x=d,y=mse,linetype=factor(which),shape=factor(which)))+
+
+gg <- ggplot(error_by_dim_df[error_by_dim_df$d>1,],
+    aes(x=d,y=mse,linetype=factor(which),shape=factor(which)))+
   facet_wrap(~m)+
-  geom_point(data=dim_selection_df,size=3)+
+  geom_point(data=dim_selection_df)+
   scale_linetype_manual(name="",values=c(1,2,0,0))+
   scale_shape_manual(name="",values=c(-1,-1,15,17))+
-  geom_line(alpha=1,size=lSize)+
-  geom_linerange(aes(ymin=lci,ymax=uci),alpha=.5,size=1)+
+  geom_line()+
+  # geom_linerange(aes(ymin=lci,ymax=uci),alpha=.5,size=1)+
   xlab("Dimension")+ylab("MSE")+
-  theme(strip.text.x = element_text(size=20,face="bold"))+
-  theme(axis.text=element_text(size=15),
-        axis.title=element_text(size=20,face="bold"))+
+  # theme(strip.text.x = element_text(size=20,face="bold"))+
+  # theme(axis.text=element_text(size=15),
+  #       axis.title=element_text(size=20,face="bold"))+
   theme(panel.grid.major = element_line(colour="grey95"),
         panel.grid.minor = element_blank())+
   theme(panel.background = element_rect(fill = 'white', colour = 'grey70'))+
-  theme(legend.text=element_text(size=20,face="bold"))+
-  theme(legend.position="bottom")+
-  ggtitle(paste0("Simulation based on ", dataName, ", N=", n, ", M=", m))+
-  theme(legend.key.size=unit(legendSize,"line"))+
-  theme(plot.title=element_text(lineheight=.8,size=20,face="bold"))
+  # theme(legend.text=element_text(size=20,face="bold"))+
+  theme(legend.position="bottom")
+  # ggtitle(paste0("Simulation based on ", dataName, ", N=", n, ", M=", m))+
+  # theme(legend.key.size=unit(legendSize,"line"))+
+  # theme(plot.title=element_text(lineheight=.8,size=20,face="bold"))
 print(gg)
+
+
+
+ggsave("../../Draft/sim_desikan.pdf",
+  plot=gg+theme(text=element_text(size=10,family="CM Roman")),
+    width=5.5,height=2.5)
+
 

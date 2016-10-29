@@ -1,7 +1,4 @@
 rm(list = ls())
-# setwd("E:/GitHub/LLG/Code/R")
-# setwd("/Users/Runze/Documents/GitHub/LLG/Code/R")
-# setwd("/cis/home/rtang/LLG/Code/R")
 
 pp <- list()
 
@@ -119,35 +116,23 @@ label_y <- with(error_by_dim_df, .75*max(mse)+.25*min(mse))
 
 gg <- ggplot(error_by_dim_df,aes(x=d,y=mse,linetype=factor(which),shape=factor(which)))+
   facet_wrap(~m)+
-  #   geom_point(data=subset(dim_selection_df,which=="ZG 3rd"),size=2,colour="red")+
-  #   geom_point(data=subset(dim_selection_df,which=="USVT c=0.7"),size=2,colour="blue")+
   geom_point(data=dim_selection_df,size=1.5)+
   scale_linetype_manual(name="",values=c(1,2,0,0))+
   scale_shape_manual(name="",values=c(-1,-1,15,17))+
-  #   geom_point(dim_selection_df,aes(shape=which))+
   geom_line()+
   geom_linerange(aes(ymin=lci,ymax=uci),linetype=1,alpha=.5,size=.5)+
-  #   geom_vline(data=dim_selection_df,
-  #              aes(xintercept=value,color=which,linetype=variable))+
-  #   scale_linetype_manual(name="",values=c(1,2,3,4))+
-  #   geom_text(data=dim_selection_df %>% filter(variable=="mean"),
-  #             aes(x=value+n/30,y=label_y,linetype=variable,label=which,color=which),angle=90)+
-  #   scale_color_discrete(guide=FALSE)+
   xlab("")+ylab("MSE")+
-  # theme(strip.text.x = element_text(size=20,face="bold"))+
-  # theme(axis.text=element_text(size=15),
-  #       axis.title=element_text(size=20,face="bold"))+
   theme(panel.grid.major = element_line(colour="grey95"),
         panel.grid.minor = element_blank())+
   theme(panel.background = element_rect(fill = 'white', colour = 'grey70'))+
-  theme(legend.position="none")+
+  theme(legend.position="bottom")+
   ggtitle(paste0(dataName, ", N=", n))
 
 pp[[1]]=gg
 
-ggsave("../../Draft/corr_data_MSE_jhu.pdf",
+ggsave("../../Draft/corr_data_MSE_jhu_poster.pdf",
   plot=gg+theme(text=element_text(size=10,family="CM Roman")),
-    width=5.5,height=2)
+    width=5.5,height=2.5)
 
 
 ################## Desikan #########################
@@ -263,35 +248,23 @@ label_y <- with(error_by_dim_df, .75*max(mse)+.25*min(mse))
 
 gg <- ggplot(error_by_dim_df,aes(x=d,y=mse,linetype=factor(which),shape=factor(which)))+
   facet_wrap(~m)+
-  #   geom_point(data=subset(dim_selection_df,which=="ZG 3rd"),size=2,colour="red")+
-  #   geom_point(data=subset(dim_selection_df,which=="USVT c=0.7"),size=2,colour="blue")+
   geom_point(data=dim_selection_df,size=1.5)+
   scale_linetype_manual(name="",values=c(1,2,0,0))+
   scale_shape_manual(name="",values=c(-1,-1,15,17))+
-  #   geom_point(dim_selection_df,aes(shape=which))+
   geom_line()+
   geom_linerange(aes(ymin=lci,ymax=uci),linetype=1,alpha=.5,size=.5)+
-  #   geom_vline(data=dim_selection_df,
-  #              aes(xintercept=value,color=which,linetype=variable))+
-  #   scale_linetype_manual(name="",values=c(1,2,3,4))+
-  #   geom_text(data=dim_selection_df %>% filter(variable=="mean"),
-  #             aes(x=value+n/30,y=label_y,linetype=variable,label=which,color=which),angle=90)+
-  #   scale_color_discrete(guide=FALSE)+
   xlab("")+ylab("MSE")+
-  # theme(strip.text.x = element_text(size=20,face="bold"))+
-  # theme(axis.text=element_text(size=15),
-  #       axis.title=element_text(size=20,face="bold"))+
   theme(panel.grid.major = element_line(colour="grey95"),
         panel.grid.minor = element_blank())+
   theme(panel.background = element_rect(fill = 'white', colour = 'grey70'))+
-  theme(legend.position="none")+
+  theme(legend.position="bottom")+
   ggtitle(paste0(dataName, ", N=", n))
 
 pp[[2]]=gg
 
-ggsave("../../Draft/corr_data_MSE_desikan.pdf",
+ggsave("../../Draft/corr_data_MSE_desikan_poster.pdf",
   plot=gg+theme(text=element_text(size=10,family="CM Roman")),
-    width=5.5,height=2)
+    width=5.5,height=2.5)
 
 ################## CPAC200 #########################
 dataName = "CPAC200"
@@ -406,24 +379,12 @@ label_y <- with(error_by_dim_df, .75*max(mse)+.25*min(mse))
 
 gg <- ggplot(error_by_dim_df,aes(x=d,y=mse,linetype=factor(which),shape=factor(which)))+
   facet_wrap(~m)+
-  #   geom_point(data=subset(dim_selection_df,which=="ZG 3rd"),size=2,colour="red")+
-  #   geom_point(data=subset(dim_selection_df,which=="USVT c=0.7"),size=2,colour="blue")+
   geom_point(data=dim_selection_df,size=1.5)+
   scale_linetype_manual(name="",values=c(1,2,0,0))+
   scale_shape_manual(name="",values=c(-1,-1,15,17))+
-  #   geom_point(dim_selection_df,aes(shape=which))+
   geom_line()+
   geom_linerange(aes(ymin=lci,ymax=uci),linetype=1,alpha=.5,size=.5)+
-  #   geom_vline(data=dim_selection_df,
-  #              aes(xintercept=value,color=which,linetype=variable))+
-  #   scale_linetype_manual(name="",values=c(1,2,3,4))+
-  #   geom_text(data=dim_selection_df %>% filter(variable=="mean"),
-  #             aes(x=value+n/30,y=label_y,linetype=variable,label=which,color=which),angle=90)+
-  #   scale_color_discrete(guide=FALSE)+
   xlab("dimension")+ylab("MSE")+
-  # theme(strip.text.x = element_text(size=20,face="bold"))+
-  # theme(axis.text=element_text(size=15),
-  #       axis.title=element_text(size=20,face="bold"))+
   theme(panel.grid.major = element_line(colour="grey95"),
         panel.grid.minor = element_blank())+
   theme(panel.background = element_rect(fill = 'white', colour = 'grey70'))+
@@ -432,7 +393,7 @@ gg <- ggplot(error_by_dim_df,aes(x=d,y=mse,linetype=factor(which),shape=factor(w
 
 pp[[3]]=gg
 
-ggsave("../../Draft/corr_data_MSE_CPAC200.pdf",
+ggsave("../../Draft/corr_data_MSE_CPAC200_poster.pdf",
   plot=gg+theme(text=element_text(size=10,family="CM Roman")),
     width=5.5,height=2.5)
 
