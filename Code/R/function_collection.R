@@ -21,16 +21,28 @@ read_data <- function(dataName, DA=T) {
   } else {
     require(igraph)
     subjectsID = readLines("../../Data/subnames.txt")
-    g = read_graph(paste("../../Data/", dataName, "/SWU4_", subjectsID[1], 
-                         "_1_", dataName, "_sg.graphml", sep =""), format="graphml")
+    if (dataName == "DS01876") {
+      g = read_graph(paste("../../Data/", dataName, "/SWU4_", subjectsID[1], 
+                           "_1_DTI_", dataName, ".graphml", sep =""), format="graphml")      
+    } else {
+      g = read_graph(paste("../../Data/", dataName, "/SWU4_", subjectsID[1], 
+                           "_1_", dataName, "_sg.graphml", sep =""), format="graphml")
+    }
     n = vcount(g)
     
     M = 227*2;
     A_all = list()
     for (sub in 1:227) {
       for (session in 1:2) {
-        g = read_graph(paste("../../Data/", dataName, "/SWU4_", subjectsID[sub], 
-                             "_", session, "_", dataName, "_sg.graphml",sep=""), format = "graphml")
+        if (dataName == "DS01876") {
+          g = read_graph(paste("../../Data/", dataName, "/SWU4_", subjectsID[sub], 
+                               "_", session, "_DTI_", dataName, ".graphml",sep=""),
+                         format = "graphml")          
+        } else {
+          g = read_graph(paste("../../Data/", dataName, "/SWU4_", subjectsID[sub], 
+                               "_", session, "_", dataName, "_sg.graphml",sep=""),
+                         format = "graphml")
+        }
         A = as_adj(g, type="both", sparse=FALSE)
         if (DA) {
           A = diag_aug(A)

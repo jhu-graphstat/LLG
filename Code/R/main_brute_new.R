@@ -9,7 +9,7 @@ setwd("/Users/Runze/Documents/GitHub/LLG/Code/R")
 # m = 1
 # isSVD = 1
 
-mVec = c(1, 5, 10)
+mVec = c(1, 10, 20)
 # mVec = 1:10
 
 for (m in mVec) {
@@ -20,13 +20,10 @@ for (m in mVec) {
     nIter = 1000
     nCores = 2
     
-    dataName = "CPAC200"
-#         dataName = "desikan"
-#         dataName = "JHU"
-    #     dataName = "slab907"
-    #     dataName = "slab1068"
-    #     dataName = "Talairach"
-    
+    #     dataName = "CPAC200"
+    #     dataName = "desikan"
+    #     dataName = "JHU"
+    dataName = "DS01876"
     
     source("function_collection.R")
     tmpList = read_data(dataName, DA=F)
@@ -53,7 +50,7 @@ for (m in mVec) {
     # out = array(unlist(out), dim = c(2, nD, nIter))
     # error_A_bar = out[1,,]
     # error_P_hat = out[2,,]
-
+    
     out <- mclapply(1:nIter, function(x) dim_brute2(M, m, dVec, A_all, A_sum, isSVD), 
                     mc.cores=nCores)
     out = array(unlist(out), dim = c(nD+3, nIter))
