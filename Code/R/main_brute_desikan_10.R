@@ -29,7 +29,7 @@ for (m in mVec) {
     
     
     source("function_collection.R")
-    tmpList = read_data(dataName, DA=F)
+    tmpList = read_data(dataName, DA=F, newGraph=T)
     A_all = tmpList[[1]]
     n = tmpList[[2]]
     M = tmpList[[3]]
