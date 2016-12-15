@@ -56,7 +56,7 @@
 
 % Leave date blank
 \date{}
-\title{Law of Large Graphs}
+\title{Connectome Smoothing and a Law of Large Graphs}
 \author{
 Runze Tang\textsuperscript{1},
 Michael Ketcha\textsuperscript{2},
@@ -204,7 +204,7 @@ For this case, we aim to estimate the mean graph $P=\Ex[A^{(m)}]$ based on the o
 
 \subsection{Random Dot Product Graph}
 In graphs, the adjacencies between vertices generally depend on unobserved properties of the corresponding vertices. For example, in a connectomics setting, the two brain regions with similar properties will have similar connectivity patterns to other regions of the brain.
-The latent positions model (LPM) proposed by Hoff et. al. (2002) \citep{hoff2002latent} captures such structure, where each vertex is associated with a latent position that influences the adjacencies for that vertex.
+The latent positions model (LPM) proposed by \citep{hoff2002latent} captures such structure, where each vertex is associated with a latent position that influences the adjacencies for that vertex.
 In this model, each vertex $i$ has an associated latent vector $X_i \in \Re^d$.
 Conditioned on the latent positions, the existence of each edge is independent and the probability the edge is present only depends on the latent vectors of the incident vertices through a link function. If $d$ is much smaller than the number of vertices $N$ and the link function is known, LPMs are more parsimonious models compared to IEM, requiring only $dN$ parameters rather than $\binom{N}{2}$.
 
@@ -250,6 +250,9 @@ In this way, the SBM can be seen as an RDPG where all vertices in the same block
 An example SBM is illustrated in Fig.~\ref{fig:SBM_example}.
 We consider a 5-block SBM and plot the corresponding probability matrix and one adjacency matrix generated from it with 200 vertices. From the top two panels of the figure, we can clearly see the structure of 25 blocks in both the probability matrix and the adjacency matrix as a result of 5 different blocks among vertices.
 
+\begin{remark}
+To get back to RDPG we allow for DC and MM.
+\end{remark}
 
 
 \section{Estimators}
@@ -483,7 +486,7 @@ As a result, $\mathrm{RE}(\bar{A},\hat{P})$ will increase as $M$ increases for f
 Indeed, for large $M$ we could have $\mathrm{RE}(\bar{A},\hat{P})\geq 1$ since we cannot guarantee that $\hat{P}$ will choose the optimal dimension.
 \end{remark}
 
-\subsection{Finite Sample Simulations}\label{sec:sbm_sim}
+\subsection{Finite Sample Toy Model Simulations}\label{sec:sbm_sim}
 
 
 \begin{figure}[!htbp]
