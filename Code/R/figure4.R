@@ -409,8 +409,10 @@ gg <- ggplot(error_by_dim_df,aes(x=d,y=mse,linetype=factor(which),shape=factor(w
   #   geom_point(data=subset(dim_selection_df,which=="ZG 3rd"),size=2,colour="red")+
   #   geom_point(data=subset(dim_selection_df,which=="USVT c=0.7"),size=2,colour="blue")+
   geom_point(data=dim_selection_df,size=1.5)+
-  scale_linetype_manual(name="",values=c(1,2,0,0))+
-  scale_shape_manual(name="",values=c(-1,-1,15,17))+
+  scale_linetype_manual(name="",values=c(1,2,0,0),
+                        labels=c(expression(bar(A)), expression(hat(P)), "USVT c=0.7", "ZG 3rd"))+
+  scale_shape_manual(name="",values=c(-1,-1,15,17),
+                     labels=c(expression(bar(A)), expression(hat(P)), "USVT c=0.7", "ZG 3rd"))+
   #   geom_point(dim_selection_df,aes(shape=which))+
   geom_line()+
   geom_linerange(aes(ymin=lci,ymax=uci),linetype=1,alpha=.5,size=.5)+
