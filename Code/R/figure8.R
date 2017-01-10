@@ -94,16 +94,34 @@ dim_selection_df <- rbind(
 
 label_y <- with(error_by_dim_df, .75*max(mse)+.25*min(mse))
 
+gg <- ggplot(error_by_dim_df,aes(x=d,y=mse,linetype=factor(which),shape=factor(which)))+
+  facet_wrap(~m, nrow=1)+
+  geom_point(data=dim_selection_df,size=1.5)+
+  scale_linetype_manual(name="",values=c(1,2,0,0),
+                        labels=c(expression(bar(A)), expression(hat(P)), "USVT c=0.7", "ZG 3rd"))+
+  scale_shape_manual(name="",values=c(-1,-1,15,17),
+                     labels=c(expression(bar(A)), expression(hat(P)), "USVT c=0.7", "ZG 3rd"))+
+  geom_line()+
+  geom_linerange(aes(ymin=lci,ymax=uci),linetype=1,alpha=.5,size=.5)+
+  xlab("dimension")+ylab("MSE")+
+  theme(panel.grid.major = element_line(colour="grey95"),
+        panel.grid.minor = element_blank())+
+  theme(panel.background = element_rect(fill = 'white', colour = 'grey70'))+
+  theme(legend.position="bottom")+
+  ggtitle(paste0(dataName, ", N=", n))
+
 
 gg <- ggplot(error_by_dim_df[error_by_dim_df$d>1,],
-    aes(x=d,y=mse,linetype=factor(which),shape=factor(which)))+
+             aes(x=d,y=mse,linetype=factor(which),shape=factor(which)))+
   facet_wrap(~m)+
-  geom_point(data=dim_selection_df)+
-  scale_linetype_manual(name="",values=c(1,2,0,0))+
-  scale_shape_manual(name="",values=c(-1,-1,15,17))+
+  geom_point(data=dim_selection_df,size=1.5)+
+  scale_linetype_manual(name="",values=c(1,2,0,0),
+                        labels=c(expression(bar(A)), expression(hat(P)), "USVT c=0.7", "ZG 3rd"))+
+  scale_shape_manual(name="",values=c(-1,-1,15,17),
+                     labels=c(expression(bar(A)), expression(hat(P)), "USVT c=0.7", "ZG 3rd"))+
   geom_line()+
   # geom_linerange(aes(ymin=lci,ymax=uci),alpha=.5,size=1)+
-  xlab("Dimension")+ylab("MSE")+
+  xlab("dimension")+ylab("MSE")+
   # theme(strip.text.x = element_text(size=20,face="bold"))+
   # theme(axis.text=element_text(size=15),
   #       axis.title=element_text(size=20,face="bold"))+
@@ -111,16 +129,17 @@ gg <- ggplot(error_by_dim_df[error_by_dim_df$d>1,],
         panel.grid.minor = element_blank())+
   theme(panel.background = element_rect(fill = 'white', colour = 'grey70'))+
   # theme(legend.text=element_text(size=20,face="bold"))+
-  theme(legend.position="bottom")
-  # ggtitle(paste0("Simulation based on ", dataName, ", N=", n, ", M=", m))+
-  # theme(legend.key.size=unit(legendSize,"line"))+
-  # theme(plot.title=element_text(lineheight=.8,size=20,face="bold"))
+  theme(legend.position="bottom")+
+# ggtitle(paste0("Simulation based on ", dataName, ", N=", n, ", M=", m))+
+# theme(legend.key.size=unit(legendSize,"line"))+
+# theme(plot.title=element_text(lineheight=.8,size=20,face="bold"))
 print(gg)
 
 
 
 ggsave("../../Draft/sim_desikan.pdf",
-  plot=gg+theme(text=element_text(size=10,family="Times")),
-    width=5.5,height=2.5)
+       plot=gg+theme(text=element_text(size=10,family="Times")),
+       # plot=gg+theme(text=element_text(size=10,family="CM Roman")),
+       width=5.5,height=2.5)
 
 

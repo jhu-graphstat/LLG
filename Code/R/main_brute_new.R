@@ -17,7 +17,7 @@ for (m in mVec) {
     
     print(c(m, isSVD))
     
-    nIter = 1000
+    nIter = 500
     nCores = 2
     
     dataName = "CPAC200"
@@ -35,6 +35,9 @@ for (m in mVec) {
     M = tmpList[[3]]
     rm(tmpList)
     
+#     nZeroVec <- sapply(1:M, function(ind) {sum(A_all[[ind]] == 0)})
+#     hist(nZeroVec)
+
     dVec = 1:n
     nD = length(dVec)
     
@@ -106,9 +109,9 @@ for (m in mVec) {
     # }
     
     if (isSVD) {
-      fileName = paste("../../Result/result_", dataName, "_brute_", "m_", m, "_svd.RData", sep="")
+      fileName = paste("../../Result/result_", dataName, "_new_brute_", "m_", m, "_svd.RData", sep="")
     } else {
-      fileName = paste("../../Result/result_", dataName, "_brute_", "m_", m, "_eig.RData", sep="")
+      fileName = paste("../../Result/result_", dataName, "_new_brute_", "m_", m, "_eig.RData", sep="")
     }
     
     save(error_A_bar, error_P_hat, error_P_hat_ZG, error_P_hat_USVT, 

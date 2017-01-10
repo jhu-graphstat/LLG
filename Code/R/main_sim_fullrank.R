@@ -21,7 +21,7 @@ dataName = "desikan"
 source("function_collection.R")
 require(parallel)
 
-tmpList = read_data(dataName, DA=F)
+tmpList = read_data(dataName, DA=F, newGraph=F)
 A_all = tmpList[[1]]
 n = tmpList[[2]]
 M = tmpList[[3]]
@@ -67,6 +67,7 @@ nIter = 100
 
 source("getElbows.R")
 source("USVT.R")
+require(igraph)
 
 dZG = matrix(0, length(mVec), nIter)
 dUSVT = matrix(0, length(mVec), nIter)
