@@ -687,7 +687,7 @@ In the figure, we denote the 3rd elbow found by the Zhu and Ghodsi method by a t
 Both dimension selection algorithms tend to select dimensions which nearly minimize the mean squared error.
 % The standard error for the Zhu and Ghodsi and the USVT methods are about $0.9$ and $0.17$ respectively.
 
-When $M$ is 1 or 5, $\bar{A}$ has large variance which leads to large $\hat{\mathrm{MSE}}$. Meanwhile, $\hat{P}$ reduces the variance by taking advantages of inherent low-rank structure of the mean graph. Such smoothing effect is especially obvious while we only have 1 observation. When $M = 1$, all weights of the graph are either 0 or 1, leading to a very bumpy estimate $\bar{A}$. In this case, $\hat{P}$ smooth the connectomes estimate and improve the performance.
+When $M$ is 1 or 5, $\bar{A}$ has large variance which leads to large $\hat{\mathrm{MSE}}$. Meanwhile, $\hat{P}$ reduces the variance by taking advantages of inherent low-rank structure of the mean graph. Such smoothing effect is especially obvious while we only have 1 observation. When $M = 1$, all weights of the graph are either 0 or 1, leading to a very bumpy estimate $\bar{A}$. In this case, $\hat{P}$ smooths the connectomes estimate and improves the performance.
 Additionally, we see that there is a large range of dimensions where the performance for $\hat{P}$ is superior to $\bar{A}$. 
 With a larger $M$, the performance of $\bar{A}$ improves so that its performance is frequently superior but nearly identical to $\hat{P}$.
 
@@ -922,20 +922,14 @@ Similarly, \citet{durante2014nonparametric} used low-rank deviations from a full
 
 We also note that low-rank methods can often be more easily interpreted.
 By representing a low-rank matrix in terms of the latent position, where each vertex is represented as a vector in $\Re^d$ and the entries of the matrix are given by the inner products of these vectors (see Section~\ref{section:sbm_rdpg}), one can analyze and visualize the geometry of these vectors in order to interpret how each vertex is behaving in the context of the larger graph. 
-Now we take the CoRR dataset experiment as an example and consider the same sample of size $M=5$ based on the Desikan atlas as discussed in Section~\ref{sec:corr_data}. Our estimator $\hat{P}$ is based on the estimated latent positions $\hat{X} \in \mathbb{R}^{N\times d}$, where $N=70$ is the number of vertices and $d=11$ is the dimension selected by the Zhu and Ghodsi's method. Now we plot $\hat{X}$ in Fig.~\ref{fig:eigenvector}, with each row to be the estimated latent position for the corresponding vertex. From the second column, we can see clear distinction of the left and right hemisphere as conveyed in the second dimension.
-
-researchers are interested in the other hypothesis structure in other subspace, you could try to visualize these with this method.
-
-Additionally, such a representation allows the use of techniques from multivariate analysis to further study the estimated population mean.
+Now we take the CoRR dataset experiment as an example and consider the same sample of size $M=5$ based on the Desikan atlas as discussed in Section~\ref{sec:corr_data}. Our estimator $\hat{P}$ is based on the estimated latent positions $\hat{X} \in \mathbb{R}^{N\times d}$, where $N=70$ is the number of vertices and $d=11$ is the dimension selected by the Zhu and Ghodsi's method. Now we plot $\hat{X}$ in Fig.~\ref{fig:eigenvector}, with each row to be the estimated latent position for the corresponding vertex. From the second column, we can see a clear distinction of the left and right hemisphere as conveyed in the second dimension. Additionally, such a representation allows the use of techniques from multivariate analysis to further study the estimated population mean.
 
 
 \begin{figure}[!htbp]
 \centering
 \includegraphics[width=.8\textwidth]{eigenvector.pdf}
-\caption{{\bf Comparison of $\hat{P}$ and $\bar{A}$ for synthetic data analysis.}
-As in Fig.~\ref{fig:RE}, this figure shows $\hat{\mathrm{MSE}}$ for $\bar{A}$ (solid line) and $\hat{P}$ (dashed line) for simulated data with different sample sizes $M$ based on the sample mean for the Desikan dataset. Again, the average of dimensions selected by the USVT method (square) and the ZG method (triangle) tend to nearly approximate the optimal dimension. 
-Overall, we see that the structure of these plots well approximates the structure for the real data indicating that performance for the independent edge model will tend to translate in structure to non-independent edge scenarios. 
-On the other hand, the relative efficiency $\hat{\mathrm{RE}}(\bar{A},\hat{P})$ is lower for this synthetic data analysis than for the CoRR data.}
+\caption{{\bf Heatmap of $\hat{X}$.}
+Heatmap of $\hat{X}$ with each row to be the estimated latent position for the corresponding vertex. From the second column, we can see a clear distinction of the left and right hemisphere as conveyed in the second dimension.}
 \label{fig:eigenvector}
 \end{figure}
 
@@ -1019,7 +1013,7 @@ Here we provide an outline of the proof of Lemma~\ref{lm:VarPhat} which provides
 The result depends on using the asymptotic results (see Theorem \ref{thm:clt_ext}) for the distribution of eigenvectors from \citet{athreya2013limit} which extend to the multiple graph setting in a straightforward way.
 
 The first key observation is that since $\bar{A}$ is computed from iid observations each with expectation $P$, $\bar{A}$ is unbiased for $P$ and $\mathrm{Var}(A_{ij}) = \frac{1}{M}P_{ij}(1-P_{ij})$.
-The results of \citet{athreya2013limit} provide a central limit theorem for estimates of the latent position in an RDPG model for a single graph.
+The results of \citet{athreya2013limit} provide a central limit theorem for estimates of the latent position in an RDPG model for a single graph. Details of this theorem are in Theorem~\ref{thm:clt_ext}.
 Since the variance of each entry is scaled by $1/M$ in $\bar{A}$, the analogous result for $\bar{A}$ is that the estimated latent positions will follow an approximately normal distribution with variance scaled by $1/M$ compared to the variance for a single graph. 
     
 % When comparing two estimators, the first thing we need to consider is consistency.
