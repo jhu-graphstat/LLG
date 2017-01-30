@@ -922,15 +922,26 @@ Similarly, \citet{durante2014nonparametric} used low-rank deviations from a full
 
 We also note that low-rank methods can often be more easily interpreted.
 By representing a low-rank matrix in terms of the latent position, where each vertex is represented as a vector in $\Re^d$ and the entries of the matrix are given by the inner products of these vectors (see Section~\ref{section:sbm_rdpg}), one can analyze and visualize the geometry of these vectors in order to interpret how each vertex is behaving in the context of the larger graph. 
-Now we take the CoRR dataset experiment as an example and consider the same sample of size $M=5$ based on the Desikan atlas as discussed in Section~\ref{sec:corr_data}. Our estimator $\hat{P}$ is based on the estimated latent positions $\hat{X} \in \mathbb{R}^{N\times d}$, where $N=70$ is the number of vertices and $d=11$ is the dimension selected by the Zhu and Ghodsi's method. Now we plot $\hat{X}$ in Fig.~\ref{fig:eigenvector}, with each row to be the estimated latent position for the corresponding vertex. From the second column, we can see a clear distinction of the left and right hemisphere as conveyed in the second dimension. Additionally, such a representation allows the use of techniques from multivariate analysis to further study the estimated population mean.
+Now we take the CoRR dataset experiment as an example and consider the same sample of size $M=5$ based on the Desikan atlas as discussed in Section~\ref{sec:corr_data}. Our estimator $\hat{P}$ is based on the estimated latent positions $\hat{X} \in \mathbb{R}^{N\times d}$, where $N=70$ is the number of vertices and $d=11$ is the dimension selected by the Zhu and Ghodsi's method. Now we plot the heat map of $\hat{X}$ in Fig.~\ref{fig:eigenvector}, with each row to be the estimated latent position for the corresponding vertex. From the second column, we can see a clear distinction of the left and right hemisphere as conveyed in the second dimension. To have a more direct understanding of how they distinguish the two hemispheres, we color the brain using the 2nd dimension of $\hat{X}$ as in Fig.~\ref{fig:eigenvector_brain}. Additionally, such a representation allows the use of techniques from multivariate analysis to further study the estimated population mean.
 
 
 \begin{figure}[!htbp]
 \centering
 \includegraphics[width=.8\textwidth]{eigenvector.pdf}
-\caption{{\bf Heatmap of $\hat{X}$.}
-Heatmap of $\hat{X}$ with each row to be the estimated latent position for the corresponding vertex. From the second column, we can see a clear distinction of the left and right hemisphere as conveyed in the second dimension.}
+\caption{{\bf Heat map of $\hat{X}$.}
+Heat map of $\hat{X}$ with each row to be the estimated latent position for the corresponding vertex. From the second column, we can see a clear distinction of the left and right hemisphere as conveyed in the second dimension.}
 \label{fig:eigenvector}
+\end{figure}
+
+\begin{figure}[!htbp]
+\begin{center}
+  \includegraphics[height=.4\linewidth]{desikan2.png}\hspace{-40pt}
+  \includegraphics[height=.4\linewidth]{desikan0.png}\hspace{-40pt}
+  \includegraphics[height=.4\linewidth]{desikan.png}
+\end{center}
+\caption{{\bf Brain colored by the 2nd dimension of $\hat{X}$.}
+We plot the brain using the 2nd dimension of $\hat{X}$. From the figure, we can see a clear distinction of the left and right hemisphere as conveyed in the second dimension.}
+\label{fig:eigenvector_brain}
 \end{figure}
 
 
