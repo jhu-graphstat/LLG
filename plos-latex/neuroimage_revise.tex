@@ -132,7 +132,7 @@ By exploiting a bias-variance trade-off, it is often fruitful to develop estimat
 When these estimators are biased towards low-dimensional structures which well approximate the full dimensional population mean, major improvements can be realized \citep{trunk1979problem}.
 
 
-In statistical decision theory, we say that a procedure $\delta^{\prime}$ improves another procedure $\delta$ if and only if the risk of $\delta^{\prime}$ is no bigger than the risk of $\delta$ all the time, and strictly less than the risk of $\delta$ for in some situations. If there exists a decision procedure $\delta^{\prime}$ which improves $\delta$, then $\delta$ is said to be inadmissible. So generally, inadmissible procedure is not preferred since there is another choice which is always ``better'' than it.
+In statistical decision theory, we say that a procedure $\delta^{\prime}$ dominates another procedure $\delta$ if and only if the risk of $\delta^{\prime}$ is no bigger than the risk of $\delta$ all the time, and strictly less than the risk of $\delta$ for in some situations. If there exists a decision procedure $\delta^{\prime}$ which dominates $\delta$, then $\delta$ is said to be inadmissible. So generally, inadmissible procedure is not preferred since there is another choice which is always ``better'' than it.
 However, in a striking result, \citet{stein1956inadmissibility} and \citet{james1961estimation} showed the arithmetic average should not always be the first choice and is inadmissible in even simple settings by today's standards. 
 In particular, James and Stein showed that the sample mean for a multivariate normal distribution with at least three dimensions is inadmissible and can be strictly improved by carefully biasing the  estimate towards any given fixed point. 
 Twenty-seven years later, \citet{gutmann1982stein} proved that this phenomenon cannot occur when the sample spaces are finite.
@@ -198,9 +198,10 @@ We conclude with a discussion of these results in Section~\ref{sec:discussion}  
 \label{section:model}
 This work considers the scenario of having $M$ graphs, represented as adjacency matrices, $\{A^{(m)}\}$ ($m = 1, \cdots, M$), each having $N$ vertices with $A^{(m)}\in\{0,1\}^{N\times N}$.
 We assume there is a known correspondence for vertices in different graphs, so that vertex $i$ in graph $m$ corresponds to vertex $i$ in graph $m'$ for any $i$, $m$, $m'$.
-The graphs we consider are undirected and unweighted with no self-loops, so each $A^{(m)}$ is a binary symmetric matrix with zeros along the diagonal. An example application of this arises in the field of connectomics, where  brain imaging data for each subject can be represented as a graph, where each vertex represents a well-defined anatomical region present in each subject.
-For structural brain imaging, an edge may represent the presence of anatomical connections between the two regions as estimated based on tractography for diffusion tensor magnetic resonance imaging.
-Similarly, for functional data, an edge between two regions may represent the presence of correlated brain activity between the two regions. 
+The graphs we consider are undirected and unweighted with no self-loops, so each $A^{(m)}$ is a binary symmetric matrix with zeros along the diagonal. 
+In connectomics, the  brain imaging data for each subject can be processed  to output a graph, where each vertex represents a well-defined anatomical region present in each subject.
+For structural brain imaging, such as diffusion tensor MRI, an edge may represent the presence of anatomical connections between the two regions as estimated based on tractography for diffusion tensor magnetic resonance imaging.
+Similarly, for functional brain imaging, such as fMRI, an edge between two regions may represent the presence of correlated brain activity between the two regions. 
 
 
 For the purpose of this paper, we also assume that the graphs are sampled independently and identically from some distribution.
@@ -560,7 +561,7 @@ This leads to the fact that the optimal embedding dimension for estimating the m
 As a result, $\mathrm{RE}(\bar{A},\hat{P})$ will increase as $M$ increases for full-rank models.
 Indeed, for large $M$ we could have $\mathrm{RE}(\bar{A},\hat{P})\geq 1$ since we cannot guarantee that $\hat{P}$ will choose the optimal dimension.
 The lack of gaps in the eigenvalues of the mean graph makes dimension reduction quite dangerous.
-In an extreme case, the low-rank assumption will be mostly violated when all eigenvalues of the mean graph are almost equal. This leads to a certain type of structure, which is close to a constant times the identity matrix. However we don't see such structure in connectomoics.
+In an extreme case, the low-rank assumption will be most violated when all eigenvalues of the mean graph are almost equal. This leads to a certain type of structure, which is close to a constant times the identity matrix. However we don't see such structure in connectomics.
 We will check this in Section \ref{sec:corr_data} when applying our estimator to the CoRR dataset.
 \end{remark}
 
