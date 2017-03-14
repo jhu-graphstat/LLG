@@ -3,12 +3,12 @@ rm(list = ls())
 setwd("/Users/Runze/Documents/GitHub/LLG/Code/R")
 # setwd("/cis/home/rtang/LLG/Code/R")
 
-RE_ZG_Mean = list()
-RE_ZG_UB = list()
-RE_ZG_LB = list()
-RE_USVT_Mean = list()
-RE_USVT_UB = list()
-RE_USVT_LB = list()
+Diff_ZG_Mean = list()
+Diff_ZG_UB = list()
+Diff_ZG_LB = list()
+Diff_USVT_Mean = list()
+Diff_USVT_UB = list()
+Diff_USVT_LB = list()
 
 dataName = "JHU"
 # dataName = "desikan"
@@ -29,19 +29,22 @@ for (iM in 1:length(mVec)) {
   error_P_hat_ZG = error_P_hat_ZG^2*n*(n-1)
   error_P_hat_USVT = error_P_hat_USVT^2*n*(n-1)
   
-  RE_ZG_Mean[[dataName]][iM] = mean(error_P_hat_ZG/error_A_bar)
-  RE_ZG_LB[[dataName]][iM] = RE_ZG_Mean[[dataName]][iM] -
-    sqrt(var(error_P_hat_ZG/error_A_bar))/sqrt(length(error_A_bar))*1.96
-  RE_ZG_UB[[dataName]][iM] = RE_ZG_Mean[[dataName]][iM] +
-    sqrt(var(error_P_hat_ZG/error_A_bar))/sqrt(length(error_A_bar))*1.96
+  Diff_ZG_Mean[[dataName]][iM] = mean(error_A_bar - error_P_hat_ZG)
+  Diff_ZG_LB[[dataName]][iM] = Diff_ZG_Mean[[dataName]][iM] -
+    sqrt(var(error_A_bar - error_P_hat_ZG))/sqrt(length(error_A_bar))*1.96
+  Diff_ZG_UB[[dataName]][iM] = Diff_ZG_Mean[[dataName]][iM] +
+    sqrt(var(error_A_bar - error_P_hat_ZG))/sqrt(length(error_A_bar))*1.96
   
-  RE_USVT_Mean[[dataName]][iM] = mean(error_P_hat_USVT/error_A_bar)
-  RE_USVT_LB[[dataName]][iM] = RE_USVT_Mean[[dataName]][iM] -
-    sqrt(var(error_P_hat_USVT/error_A_bar))/sqrt(length(error_A_bar))*1.96
-  RE_USVT_UB[[dataName]][iM] = RE_USVT_Mean[[dataName]][iM] +
-    sqrt(var(error_P_hat_USVT/error_A_bar))/sqrt(length(error_A_bar))*1.96
+  Diff_USVT_Mean[[dataName]][iM] = mean(error_A_bar - error_P_hat_USVT)
+  Diff_USVT_LB[[dataName]][iM] = Diff_USVT_Mean[[dataName]][iM] -
+    sqrt(var(error_A_bar - error_P_hat_USVT))/sqrt(length(error_A_bar))*1.96
+  Diff_USVT_UB[[dataName]][iM] = Diff_USVT_Mean[[dataName]][iM] +
+    sqrt(var(error_A_bar - error_P_hat_USVT))/sqrt(length(error_A_bar))*1.96
   
   print(sqrt(var(error_P_hat_ZG/error_A_bar))/sqrt(length(error_A_bar))*1.96)
   print(sqrt(var(error_P_hat_USVT/error_A_bar))/sqrt(length(error_A_bar))*1.96)
+  
+  print(sum(error_A_bar > error_P_hat_ZG)/length(error_A_bar))
+  print(sum(error_A_bar > error_P_hat_USVT)/length(error_A_bar))
 }
 

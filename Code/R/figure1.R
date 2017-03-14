@@ -36,9 +36,13 @@ myCkey <- list(at=myAt)
 # pdf("../../Draft/SBM_P.pdf", family="Times", height=4.4)
 pdf("../../Draft/SBM_P.pdf", family="Times", width=4, height=4.4)
 # pdf("../../Draft/SBM_P.pdf", family="CM Roman", width=4, height=4.4)
-image(Matrix(P),main=list(label="Probability Matrix"),sub="",
-      xlab=list(cex=0),ylab=list(cex=0),scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
-      at=myAt, lwd=0)
+# image(Matrix(P),main=list(label="Probability matrix"),sub="",
+#       xlab=list(cex=0),ylab=list(cex=0),scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
+#       at=myAt, lwd=0)
+levelplot(P[1:n,n:1],col.regions=new.palette(20),xlab=list(cex=0),
+          ylab=list(cex=0),scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
+          main=list(label="Probability matrix"),
+          at=myAt, colorkey=F, lwd=0)
 dev.off()
 
 
@@ -53,7 +57,7 @@ pdf("../../Draft/SBM_A.pdf", family="Times", width=4.53, height=4.4)
 #       lwd=0)
 levelplot(as.matrix(A[1:n,n:1]),col.regions=new.palette(20),xlab=list(cex=0),
           ylab=list(cex=0),scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
-          main=list(label="Adjacency Matrix"),
+          main=list(label="Adjacency matrix"),
           at=myAt, colorkey=myCkey, lwd=0)
 dev.off()
 
@@ -102,7 +106,11 @@ dev.off()
 # pdf("../../Draft/SBM_Phat.pdf", family="Times", height=4.4)
 pdf("../../Draft/SBM_Phat.pdf", family="Times", width=4, height=4.4)
 # pdf("../../Draft/SBM_Phat.pdf", family="CM Roman", width=4, height=4.4)
-image(Matrix(P_hat),main=list(label="Rank-5 approximation (M=3)"),sub="",
-      xlab=list(cex=0),ylab=list(cex=0),scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
-      at=myAt, lwd=0)
+# image(Matrix(P_hat),main=list(label="Rank-5 approximation (M=3)"),sub="",
+#       xlab=list(cex=0),ylab=list(cex=0),scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
+#       at=myAt, lwd=0)
+levelplot(P_hat[1:n,n:1],col.regions=new.palette(20),xlab=list(cex=0),
+          ylab=list(cex=0),scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
+          main=list(label="Rank-5 approximation (M=3)"),
+          at=myAt, colorkey=F, lwd=0)
 dev.off()

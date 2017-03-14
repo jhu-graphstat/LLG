@@ -38,85 +38,25 @@ A.ase = ase(A_bar_diag_aug, dZG, isSVD)
 d = dZG
 
 xHat <- A.ase[[3]] %*% diag(sqrt(A.ase[[1]]))
-# PHat <- regularize(xHat %*% t(xHat))
 
-# sum(xHat[, 12]^2)
-# 
-# require(hisemi)
-# theta <- 2*pi/8
-# # R12 <- matrix(c(cos(theta), sin(theta), -sin(theta), cos(theta)), ncol=2)
-# # R <- directSum(R12, diag(d-2))
-# R <- directSum(cos(theta), diag(d-2), cos(theta))
-# R[d, 1] <- sin(theta)
-# R[1, d] <- -sin(theta)
 
-# yHat <- xHat %*% R
-# min(yHat)
-# max(yHat)
-# min(yHat[, 1:2])
-# max(yHat[, 1:2])
-
-# xHat <- xHat %*% R
-
-# sum(xHat[, 12]^2)
+hc <- hclust(dist(xHat))
+# plot(hc)
+nv <- order(hc$order)
 
 require(ggplot2)
-
+# xHat <- xHat[nv,]
 df <- data.frame(value=c(xHat),
+                 order=rep(sapply(1:n, function(i) {nv[i]}), times=d),
                  v=rep(sapply(1:n, function(i) {if (i < 10) {return(paste0("0", i))} else {return(paste0(i))}}), times=d),
                  d=rep(sapply(1:d, function(i) {if (i < 10) {return(paste0("0", i))} else {return(paste0(i))}}), each=n))
-gg <- ggplot(df, aes(d, v)) + 
+gg <- ggplot(df, aes(x=d, y=reorder(v,order))) + 
   geom_tile(aes(fill = value), colour = "white") + 
   # scale_fill_gradient(low = "white", high = "steelblue")
   scale_fill_gradient(low = "white", high = "grey10") + 
   xlab("dimension") + ylab("vertex")
 
-ggsave("../../Draft/eigenvector.pdf",
+ggsave("../../Draft/eigenvector_reorder.pdf",
        plot=gg+theme(text=element_text(size=10,family="Times")),
        # plot=gg+theme(text=element_text(size=10,family="CM Roman")),
        width=3.5,height=6.5)
-
-
-df <- data.frame(x=xHat[,1], y=xHat[,2])
-gg <- ggplot(df, aes(x, y)) + 
-  geom_point() + 
-  scale_fill_gradient(low = "white", high = "grey10") + 
-  xlab("1st dimension") + ylab("2nd dimension")
-
-ggsave("../../Draft/eigenvector_scatter.pdf",
-       plot=gg+theme(text=element_text(size=10,family="Times")),
-       # plot=gg+theme(text=element_text(size=10,family="CM Roman")),
-       width=3.5,height=3)
-
-
-
-
-# xHat
-# s = ""
-# for (j in 1:2) {
-#   for (i in 1:n) {
-#     s = paste0(s,",",xHat[i,j])
-#   }
-# }
-# s = substr(s,2,nchar(s))
-# write(s,file="../../Result/eigenvector.csv")
-# 
-# 
-# 
-# xHat
-# s = ""
-# for (j in 2) {
-#   for (i in 1:n) {
-#     s = paste0(s,",",xHat[i,j])
-#   }
-# }
-# s = substr(s,2,nchar(s))
-# write(s,file="../../Result/eigenvector_dim2.csv")
-
-
-
-
-hc <- hclust(dist(xHat))
-plot(hc)
-
-
