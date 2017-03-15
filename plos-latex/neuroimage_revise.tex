@@ -106,9 +106,10 @@ Daniel L. Sussman\textsuperscript{3*}}
 \linenumbers
 % Please keep the abstract below 300 words
 \begin{abstract}
-Estimating the mean of a population of graphs based on a sample is a core problem in network science.
-Often, this problem is especially difficult because the sample or cohort size is relatively small as compared to the number of parameters to estimate. 
-While using the element-wise sample mean of the adjacency matrices is a common approach, this method does not exploit any underlying graph structure.
+Estimating the mean of a population of graphs based on a sample is a core problem in connectomics and network science at large.
+Often, this problem is especially difficult because the sample or cohort size is relatively small as compared to the number of parameters to estimate.
+This problem will only be exacerbated as new technologies enable the collection of higher resolution connectomes.
+While using the element-wise sample mean of the adjacency matrices is a common approach, this method does not exploit any underlying structural properties of the graphs.
 We propose using a low-rank method together with tools for dimension selection and diagonal augmentation to smooth the estimates and improve performance over the naive methodology for small sample sizes.
 Theoretical results for the stochastic blockmodel show that this method will offer major improvements when there are many vertices.
 Similarly, in analyzing human connectome data, we demonstrate that the low-rank methods outperform the standard sample mean for many settings.
@@ -124,36 +125,54 @@ These results indicate that low-rank methods should be an important part of the 
 
 Estimation of the mean of a population based on samples is at the core of statistics.
 The sample mean, motivated by the law of large numbers and the central limit theorem, has its place as one of the most important statistics for this task.
-In modern settings, we take averages almost everywhere, from data in Euclidean space to more complex objects like shapes, documents, and graphs.
+In modern settings, we take averages almost everywhere, from data in Euclidean space to more complex objects like images, shapes, and documents.
+In this manuscript we consider the challenges of estimating a population mean based on a sample of brains, as represented by their structural connectomes. 
 
-The mean of a population of graphs is a high dimensional object, consisting of $O(N^2)$ parameters for a graph with $N$ vertices.
-Estimating high dimensional estimands with a small sample size using naive unbiased methods often leads to inaccurate estimates with very high variance.
+The mean of a population of graphs is a high dimensional object, consisting of $O(N^2)$ parameters for graphs with $N$ vertices.
+When the number of samples $M$ is much smaller than $N^2$, or even $N$, estimating such a high dimensional estimands using naive unbiased methods often leads to inaccurate estimates with very high variance.
+Furthermore, using these estimates for subsequent inference tasks such as testing can lead to low power and accuracy.
 By exploiting a bias-variance trade-off, it is often fruitful to develop estimators which have some bias but greatly reduced variance.
 When these estimators are biased towards low-dimensional structures which well approximate the full dimensional population mean, major improvements can be realized \citep{trunk1979problem}.
 
 
-In statistical decision theory, we say that a procedure $\delta^{\prime}$ dominates another procedure $\delta$ if and only if the risk of $\delta^{\prime}$ is no bigger than the risk of $\delta$ all the time, and strictly less than the risk of $\delta$ for in some situations. If there exists a decision procedure $\delta^{\prime}$ which dominates $\delta$, then $\delta$ is said to be inadmissible. So generally, inadmissible procedure is not preferred since there is another choice which is always ``better'' than it.
-However, in a striking result, \citet{stein1956inadmissibility} and \citet{james1961estimation} showed the arithmetic average should not always be the first choice and is inadmissible in even simple settings by today's standards. 
-In particular, James and Stein showed that the sample mean for a multivariate normal distribution with at least three dimensions is inadmissible and can be strictly improved by carefully biasing the  estimate towards any given fixed point. 
-Twenty-seven years later, \citet{gutmann1982stein} proved that this phenomenon cannot occur when the sample spaces are finite.
-But even when  the sample mean is admissible, this doesn't mean that other estimators should not be used in all cases.
-In many situations where other structural information is hypothesized, for instance a collection of graphs as considered in this paper, other estimators may be preferable.
+% In statistical decision theory, we say that a procedure $\delta^{\prime}$ dominates another procedure $\delta$ if the risk of $\delta^{\prime}$ is no bigger than the risk of $\delta$ regardless of the parameter, and strictly less than the risk of $\delta$ for in some situations.
+% If there exists a decision procedure $\delta^{\prime}$ which dominates $\delta$, then $\delta$ is said to be inadmissible. So generally, an inadmissible procedure is not preferred since there is another choice which is always ``better'' than it.
+In a striking result, \citet{stein1956inadmissibility} and \citet{james1961estimation} showed that even the arithmetic mean can be dominated by another procedure.
+In particular, James and Stein showed that the sample mean for a multivariate normal distribution with at least three dimensions has strictly higher risk than a procedure that introduces shrinkage, and can be strictly improved by carefully biasing the  estimate towards any given fixed point. 
+Twenty-seven years later, \citet{gutmann1982stein} proved that this phenomenon cannot occur when the sample spaces are finite, as is the case for graphs.
+However, while there must be some cases where the sample mean is preferred, this doesn't mean that other estimators should not be considered.
+In many situations where other structural information is hypothesized, other estimators may be preferable.
 
 In complex data settings such as shape data, language data, or graph data, we also must take care in how we define the mean.
-As with real valued data, one may want to define the mean of a population of graphs to be a graph such as for the median graph \citep{jiang2001median}.
-However, this may be too restrictive for populations of graphs where there is high variation in which edges appear. 
-Instead, for a collection of graphs sampled from a larger population, we define the mean graph as the weighted adjacency matrix with weights given by the proportion of times the corresponding edge appears in the population. 
-As we will describe below, this definition of the mean graph is the expectation of the adjacency matrix.
-This population mean is becoming more and more important both in statistical inference and in various applications like connectomics, social networks, and computational biology.
+For a population, we define the mean graph as the weighted adjacency matrix with weights given by the proportion of times the corresponding edge appears in the population. 
+This definition naturally extends the definition of the mean for standard Euclidean data.
+As with real valued data, one may want to define the mean of a population of graphs to be a graph.
+This is captured in the notion of the median graph \citep{jiang2001median}, however, this may be too restrictive for populations of graphs where there is high variation in which edges appear. 
+As we will describe below, our definition of the mean graph is the expectation of the adjacency matrix.
 
-
-
+This population mean is becoming an important object for statistical connectomics applications.
 % Nowadays, people care about information that can be extracted from the networks through different ways in neuroscience.
-\citet{ginestet2014hypothesis} proposed a way to test if there is a difference between the distributions for two groups of networks.  
+For example, \citet{ginestet2014hypothesis} proposed a way to test if there is a difference between the distributions for two groups of networks.  
 While hypothesis testing is the end goal of their work, estimation is a key intermediate step which may be improved by accounting for underlying structure in the mean matrix. 
 Thus, improving the estimation procedures for the mean graph is not only important by itself, but also can be applied to help improve other statistical inference procedures.
 
 To better illustrate the idea, we take the CoRR brain graphs with Desikan atlases as an example. The dataset contains 454 brain scans with 70 vertices. Each vertex represents a region defined by the Desikan atlases, while an edge exists between two vertices if there is at least one white-matter tract connecting the corresponding regions of the brain. More details about this dataset are given in Section \ref{sec:corr_data} and Section \ref{section:data}. By observing $M$ graphs sampled from the 454 graphs, our goal is to estimate the mean graph of the population $P$, defined as the entry-wise mean of all the 454 graphs. We plot the population mean graph $P$ on the left panel in Fig.~\ref{fig:Matrix_desikan_m5}.
+
+
+\begin{figure}[!tbp]
+\centering
+\includegraphics[height=.2\textheight]{P_desikan.pdf} \hspace{-35pt}
+\includegraphics[height=.201\textheight]{Abar_desikan_m5.pdf} \hspace{-35pt}
+\includegraphics[height=.205\textheight]{Phat_desikan_m5.pdf}
+\caption{{\bf Heat maps of the population mean, the sample mean, and the estimator $\hat{P}$.}
+These heat maps indicate the population mean for the $454$ graphs (left), sample mean for the 5 sampled graphs (center), and $\hat{P}$ for the 5 sampled graphs with dimension $d=11$ selected using the Zhu and Ghodsi method (right). Details about how to construct $\hat{P}$ are discussed in Section~\ref{sec:phat}.
+Darker pixels indicate a higher probability of an edge between the given vertices.
+Note that $\hat{P}$ appears to better estimate the true probability matrix $P$, especially for edges between the two hemispheres, in the upper right and corresponding lower left block.
+}
+\label{fig:Matrix_desikan_m5}
+\end{figure}
+
+
 
 The element-wise sample mean is a reasonable estimator if we consider the general independent edge model (IEM) \citep{bollobas2007phase} without taking any additional structure into account. 
 However, with only a small sample size, such as when the sample size is much less than the number of vertices, it does not perform very well.
@@ -174,20 +193,6 @@ Using estimates of the latent positions based on a truncated eigen-decomposition
 These estimates will improve performance since they will be biased towards the low-rank structure of the RDPG model and will have much lower overall variance than naive element-wise sample means. Here we consider the same random sample of size $M=5$ based on the Desikan atlas in Fig.~\ref{fig:Matrix_desikan_m5} and plot the estimate $\hat{P}$ in the right panel. Note that compared to the sample mean $\bar{A}$, $\hat{P}$ has a finer gradient of values which in this case leads to a more accurate estimate of the true probability matrix $P$, especially for edges between the two hemispheres, in the upper right and corresponding lower left block.
 In this study, we show via theory, simulations, and real data analysis that the low-rank estimator frequently outperforms the element-wise sample mean, especially in small sample sizes.
 
-\begin{figure}[!htbp]
-\centering
-\includegraphics[height=.2\textheight]{P_desikan.pdf} \hspace{-35pt}
-\includegraphics[height=.201\textheight]{Abar_desikan_m5.pdf} \hspace{-35pt}
-\includegraphics[height=.205\textheight]{Phat_desikan_m5.pdf}
-\caption{{\bf Heat maps of the population mean, the sample mean, and the estimator $\hat{P}$.}
-These heat maps indicate the population mean for the $454$ graphs (left), sample mean for the 5 sampled graphs (center), and $\hat{P}$ for the 5 sampled graphs with dimension $d=11$ selected using the Zhu and Ghodsi method (right). Details about how to construct $\hat{P}$ are discussed in Section~\ref{sec:phat}.
-Darker pixels indicate a higher probability of an edge between the given vertices.
-Note that $\hat{P}$ appears to better estimate the true probability matrix $P$, especially for edges between the two hemispheres, in the upper right and corresponding lower left block.
-}
-\label{fig:Matrix_desikan_m5}
-\end{figure}
-
-
 
 In Section~\ref{section:model}, we outline a nested collection of models which we consider for our theorems and simulations, and in Section~\ref{sec:estimator} we describe the entry-wise sample mean and introduce our specific low-rank estimator, which accounts for the unknown dimension and attempts to correct for other issues found in real world problems.
 Our main results are presented in Section~\ref{sec:result} where we present theorems and simulations for the stochastic blockmodel, an investigation of a connectome dataset, and a synthetic data analysis. 
@@ -196,7 +201,7 @@ We conclude with a discussion of these results in Section~\ref{sec:discussion}  
 
 \section{Models}
 \label{section:model}
-This work considers the scenario of having $M$ graphs, represented as adjacency matrices, $\{A^{(m)}\}$ ($m = 1, \cdots, M$), each having $N$ vertices with $A^{(m)}\in\{0,1\}^{N\times N}$.
+This work considers the scenario of having $M$ graphs, represented as adjacency matrices, $A^{(1)},A^{(2)},\dotsc,A^{(M)}$, each having $N$ vertices with $A^{(m)}\in\{0,1\}^{N\times N}$ for each $m$..
 We assume there is a known correspondence for vertices in different graphs, so that vertex $i$ in graph $m$ corresponds to vertex $i$ in graph $m'$ for any $i$, $m$, $m'$.
 The graphs we consider are undirected and unweighted with no self-loops, so each $A^{(m)}$ is a binary symmetric matrix with zeros along the diagonal. 
 In connectomics, the  brain imaging data for each subject can be processed  to output a graph, where each vertex represents a well-defined anatomical region present in each subject.
@@ -710,9 +715,9 @@ In addition, $\hat{P}$ offers certain advantages, especially since low-rank esti
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=1\textwidth]{corr_data_MSE_jhu.pdf}\\
-\includegraphics[width=1\textwidth]{corr_data_MSE_desikan.pdf}\\
-\includegraphics[width=1\textwidth]{corr_data_MSE_CPAC200.pdf}
+\includegraphics[width=.99\textwidth]{corr_data_MSE_jhu.pdf}\\
+\includegraphics[width=.99\textwidth]{corr_data_MSE_desikan.pdf}\\
+\includegraphics[width=.99\textwidth]{corr_data_MSE_CPAC200.pdf}
 \caption{{\bf Comparison of $\hat{\mathrm{MSE}}$ of $\hat{P}$ and $\bar{A}$ for three atlases at four sample sizes for the CoRR data.}
 These plots show the mean squared error for $\bar{A}$ (solid line) and $\hat{P}$ (dashed line) for three dataset (JHU, Desikan, and CPAC200) while embedding the graphs into different dimensions and with different sample sizes $M$. The average dimensions chosen by the 3rd elbow of Zhu and Ghodsi is denoted by a triangle
  % (with largest 95\% confidence interval length to be $3.5$), 

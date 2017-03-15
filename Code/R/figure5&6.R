@@ -1,6 +1,6 @@
 rm(list = ls())
 # setwd("E:/GitHub/LLG/Code/R")
-setwd("/Users/Runze/Documents/GitHub/LLG/Code/R")
+# setwd("/Users/Runze/Documents/GitHub/LLG/Code/R")
 # setwd("/cis/home/rtang/LLG/Code/R")
 
 # dataName = "CPAC200"
@@ -133,6 +133,18 @@ dev.off()
 print(dHat)
 
 
+if(require(tidyverse)){
+
+data_df <- data.frame(P=c(P), P_hat = c(P_hat), A_bar=c(A_bar))
+text_df <- data.frame(P=c(.99,0.01),estimate=c(.99,.01),which="A_bar",
+  label=c("12.6%","1.4%")) # Percent of edges that always appear and never appear
+gather(data_df,-P,key=which, value=estimate) %>%
+    ggplot(aes(x=P, color=which, shape=which, y=estimate-P))+
+    geom_point(alpha=.3)+
+    theme_classic()+
+    scale_color_discrete("")+scale_shape_discrete("")+
+    geom_text(aes(label=label,color=NA),data=text_df,color="black",fontface="bold",angle=-45)
+}
 
 ####### Plot the difference ######
 Diff_A_bar = abs(A_bar - P)
