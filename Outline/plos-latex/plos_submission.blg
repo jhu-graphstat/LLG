@@ -1,0 +1,79 @@
+This is BibTeX, Version 0.99d (TeX Live 2014)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: plos_submission.aux
+The style file: plos2015.bst
+I found no \bibdata command---while reading file plos_submission.aux
+Warning--I didn't find a database entry for "trunk1979problem"
+Warning--I didn't find a database entry for "stein1956inadmissibility"
+Warning--I didn't find a database entry for "james1961estimation"
+Warning--I didn't find a database entry for "gutmann1982stein"
+Warning--I didn't find a database entry for "jiang2001median"
+Warning--I didn't find a database entry for "ginestet2014hypothesis"
+Warning--I didn't find a database entry for "bollobas2007phasIUSe"
+Warning--I didn't find a database entry for "holland1983stochastic"
+Warning--I didn't find a database entry for "hoff2002latent"
+Warning--I didn't find a database entry for "young2007random"
+Warning--I didn't find a database entry for "nickel2007random"
+Warning--I didn't find a database entry for "bollobas2007phase"
+Warning--I didn't find a database entry for "chatterjee2015matrix"
+Warning--I didn't find a database entry for "sussman2014consistent"
+Warning--I didn't find a database entry for "zhu2006automatic"
+Warning--I didn't find a database entry for "scheinerman2010modeling"
+Warning--I didn't find a database entry for "athreya2013limit"
+Warning--I didn't find a database entry for "zuo2014open"
+Warning--I didn't find a database entry for "gorgolewski2015high"
+Warning--I didn't find a database entry for "gray2013migraine"
+Warning--I didn't find a database entry for "kiar2016m2g"
+Warning--I didn't find a database entry for "durante2014nonparametric"
+Warning--I didn't find a database entry for "huber2009robust"
+Warning--I didn't find a database entry for "qin2013maximum"
+Warning--I didn't find a database entry for "marchette2011vertex"
+Warning--I didn't find a database entry for "neurodata"
+Warning--I didn't find a database entry for "kiar2016graph"
+Warning--I didn't find a database entry for "brown1977means"
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=20001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+You've used 0 entries,
+            3058 wiz_defined-function locations,
+            653 strings with 4824 characters,
+and the built_in function-call counts, 27 in all, are:
+= -- 0
+> -- 0
+< -- 0
++ -- 0
+- -- 0
+* -- 2
+:= -- 16
+add.period$ -- 0
+call.type$ -- 0
+change.case$ -- 0
+chr.to.int$ -- 0
+cite$ -- 0
+duplicate$ -- 0
+empty$ -- 1
+format.name$ -- 0
+if$ -- 1
+int.to.chr$ -- 0
+int.to.str$ -- 0
+missing$ -- 0
+newline$ -- 3
+num.names$ -- 0
+pop$ -- 0
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 1
+stack$ -- 0
+substring$ -- 0
+swap$ -- 0
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 0
+width$ -- 0
+write$ -- 2
+(There was 1 error message)

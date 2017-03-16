@@ -113,20 +113,28 @@ df <- rbind(
 
 label_y <- with(df, .75*max(re)+.25*min(re))
 
+
+
+
 p <- ggplot(df,aes(x=n,y=re,linetype=factor(which),alpha=factor(which)))+
   # facet_wrap(~m)+
-#   geom_point()+
+  #   geom_point()+
   geom_line()+
-#   geom_linerange(aes(ymin=lci,ymax=uci),alpha=.5,size=1)+
-#   geom_vline(data=dim_selection_df,
-#              aes(xintercept=value,color=which,linetyRpe=variable))+
-  scale_linetype_manual(name="",values=c("solid","longdash","dotted","dotdash"))+
-  scale_alpha_manual(name="",values=c(.5,1,1,1))+
-#   scale_color_discrete(guide=FALSE)+
+  #   geom_linerange(aes(ymin=lci,ymax=uci),alpha=.5,size=1)+
+  #   geom_vline(data=dim_selection_df,
+  #              aes(xintercept=value,color=which,linetyRpe=variable))+
+  # scale_linetype_manual(name="",values=c("solid","longdash","dotted","dotdash"))+
+  scale_linetype_manual(name="",values=c("solid","longdash","dotted","dotdash"),
+                        labels=c("Theoretical", expression(B[11]), expression(B[22]), expression(B[12])))+
+  # scale_shape_manual(name="",values=c(-1,-1,-1,-1),
+  #                    labels=c("Theoretical", expression(B[11]), expression(B[22]), expression(B[12])))+
+  scale_alpha_manual(name="",values=c(.5,1,1,1),
+                     labels=c("Theoretical", expression(B[11]), expression(B[22]), expression(B[12])))+
+  #   scale_color_discrete(guide=FALSE)+
   xlab("number of vertices") + ylab("scaled relative efficiency")+
   # theme(strip.text.x = element_text(size=20,face="bold"))+
   # theme(axis.text=element_text(size=20),
-        # axis.title=element_text(size=20,face="bold"))+
+  # axis.title=element_text(size=20,face="bold"))+
   theme(panel.grid.major = element_line(colour="grey95"),
         panel.grid.minor = element_blank())+
   theme(panel.background = element_rect(fill = 'white', colour = 'grey70'))+
@@ -136,8 +144,9 @@ p <- ggplot(df,aes(x=n,y=re,linetype=factor(which),alpha=factor(which)))+
 print(p)
 
 ggsave("../../Draft/scaled_RE.pdf",
-    p+theme(text=element_text(size=10,family="CM Roman")),
-      width=5, height=3)
+       p+theme(text=element_text(size=10,family="Times")),
+       # p+theme(text=element_text(size=10,family="CM Roman")),
+       width=5, height=3)
 
 
 p <- ggplot(df %>% filter(which!="Theoretical"),aes(x=n,y=re/n,linetype=factor(which)))+
@@ -151,8 +160,9 @@ p <- ggplot(df %>% filter(which!="Theoretical"),aes(x=n,y=re/n,linetype=factor(w
 print(p)
 
 ggsave("../../Draft/RE.pdf",
-    p+theme(text=element_text(size=10,family="CM Roman")),
-      width=5, height=2)
+       p+theme(text=element_text(size=10,family="Times")),
+       # p+theme(text=element_text(size=10,family="CM Roman")),
+       width=5, height=2)
 
 
 ggplot(df,aes(x=n,y=n*(re-4),linetype=factor(which),alpha=factor(which)))+
@@ -188,7 +198,7 @@ for (iRho in 1:nRho) {
 df <- rbind(
   data.frame(re=re1Expectrho,which="B11",m=m,rho=rhoVec),
   data.frame(re=re3Expectrho,which="B12",m=m,rho=rhoVec))
-  # data.frame(re=re2Expectrho,which="B22",m=m,rho=rhoVec))
+# data.frame(re=re2Expectrho,which="B22",m=m,rho=rhoVec))
 
 label_y <- with(df, .75*max(re)+.25*min(re))
 
@@ -199,15 +209,16 @@ p <- ggplot(df,aes(x=rho,y=re,linetype=factor(which)))+
   #   geom_linerange(aes(ymin=lci,ymax=uci),alpha=.5,size=1)+
   #   geom_vline(data=dim_selection_df,
   #              aes(xintercept=value,color=which,linetype=variable))+
-  scale_linetype_manual(name="",values=c("solid","longdash","dotted"))+
+  scale_linetype_manual(name="",values=c("solid","longdash","dotted"),
+                        labels=c(expression(B[11]), expression(B[12]), expression(B[22])))+
   #   scale_color_discrete(guide=FALSE)+
-#   xlab("N") + ylab("Normalized Relative Efficiency")+
+  #   xlab("N") + ylab("Normalized Relative Efficiency")+
   scale_x_continuous(name="proportion of vertices in block one")+
   scale_y_continuous(name="scaled relative efficiency")+
   coord_trans(limy=(c(0,40)))+
   # theme(strip.text.x = element_text(size=20,face="bold"))+
   # theme(axis.text=element_text(size=20),
-        # axis.title=element_text(size=20,face="bold"))+
+  # axis.title=element_text(size=20,face="bold"))+
   theme(panel.grid.major = element_line(colour="grey95"),
         panel.grid.minor = element_blank())+
   theme(panel.background = element_rect(fill = 'white', colour = 'grey70')) +
@@ -217,8 +228,9 @@ p <- ggplot(df,aes(x=rho,y=re,linetype=factor(which)))+
 print(p)
 
 ggsave("../../Draft/rho.pdf",
-    p+theme(text=element_text(size=10,family="CM Roman")),
-      width=5, height=2.5)
+       p+theme(text=element_text(size=10,family="Times")),
+       # p+theme(text=element_text(size=10,family="CM Roman")),
+       width=5, height=2.5)
 
 
 

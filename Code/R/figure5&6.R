@@ -28,24 +28,79 @@ rm(tmpList)
 library(lattice)
 new.palette=colorRampPalette(c("white","black"),space="rgb")
 
+nColor <- 100
+myAt <- seq(0, 1, length.out=nColor)
+myCkey <- list(at=myAt)
+
 
 add <- function(x) Reduce("+", x)
 P = add(A_all)/M
 
-library(extrafont)
 
-pdf("../../Draft/P_desikan.pdf", family="CM Roman", width=4, height=3.5)
-image(Matrix(P),main=list(label=TeX('$P$ for Desikan')),sub="",
-            xlab=list(cex=0),ylab=list(cex=0),
-            scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),lwd=0)
+pdf("../../Draft/P_desikan.pdf", family="Times", width=4, height=3.5)
+# pdf("../../Draft/P_desikan.pdf", family="CM Roman", width=4, height=3.5)
+# image(Matrix(P),main=list(label=TeX('$P$ for Desikan')),sub="",
+#       xlab=list(cex=0),ylab=list(cex=0),
+#       scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
+#       at=myAt, lwd=0)
+levelplot(P[1:n,n:1],col.regions=new.palette(nColor),xlab=list(cex=0),
+          ylab=list(cex=0),scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
+          main=list(label=TeX('$P$ for Desikan')),
+          at=myAt, colorkey=F, lwd=0)
 dev.off()
 
-sampleVec = sample.int(M, m)
+mse1 <- c()
+mse2 <- c()
+maxMSE <- 0
+minMSE <- Inf
+sampleBest <- c()
+sampleWosrt <- c()
+source("getElbows.R")
+nElb = 3
+dMax = ceiling(n*3/5)
+for (i in 1:100) {
+  print(i)
+  sampleVec = sample.int(M, m)
+  A_bar = add(A_all[sampleVec])/m
+  evalVec = ase(A_bar, dMax, isSVD)[[1]]
+  dHat = getElbows(evalVec, n=nElb, plot=F)[[nElb]]
+  A.ase = ase(diag_aug(A_bar), dHat, isSVD)
+  if (dHat == 1) {
+    Ahat = A.ase[[1]] * A.ase[[3]] %*% t(A.ase[[2]])
+  } else {
+    Ahat <- A.ase[[3]][,1:dHat] %*% diag(A.ase[[1]][1:dHat]) %*% t(A.ase[[2]][,1:dHat])
+  }
+  P_hat = regularize(Ahat)
+  mse1[i] <- norm(A_bar - P, "F")^2
+  mse2[i] <- norm(P_hat - P, "F")^2
+  if (mse1[i] - mse2[i] > maxMSE) {
+    maxMSE <- mse1[i] - mse2[i]
+    sampleBest <- sampleVec
+  }
+  if (mse1[i] - mse2[i] < minMSE) {
+    minMSE <- mse1[i] - mse2[i]
+    sampleWorst <- sampleVec
+  }
+}
+# hist(mse1 - mse2, main = paste0("Histogram of ||Abar - P||_F^2 - ||Phat - P||_F^2"))
+
+# sampleVec = sample.int(M, m)
+# sampleVec <- c(292, 252, 296, 429, 96)
+# sampleVec <- sampleBest
+sampleVec <- sampleWorst
 A_bar = add(A_all[sampleVec])/m
-pdf("../../Draft/Abar_desikan_m5.pdf", family="CM Roman", width=4, height=3.5)
-image(Matrix(A_bar),main=list(label=TeX('$\\bar{A}$ for Desikan with M=5')),
-            sub="",xlab=list(cex=0),ylab=list(cex=0),
-            scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),lwd=0)
+
+
+pdf("../../Draft/Abar_desikan_m5.pdf", family="Times", width=4, height=3.5)
+# pdf("../../Draft/Abar_desikan_m5.pdf", family="CM Roman", width=4, height=3.5)
+# image(Matrix(A_bar),main=list(label=TeX('$\\bar{A}$ for Desikan with M=5')),
+#       sub="",xlab=list(cex=0),ylab=list(cex=0),
+#       scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
+#       at=myAt, lwd=0)
+levelplot(A_bar[1:n,n:1],col.regions=new.palette(nColor),xlab=list(cex=0),
+          ylab=list(cex=0),scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
+          main=list(label=TeX('$\\bar{A}$ for Desikan with M=5')),
+          at=myAt, colorkey=F, lwd=0)
 dev.off()
 
 ####### Estimate dimensions ######
@@ -68,15 +123,28 @@ P_hat = regularize(Ahat)
 #             sub="",xlab=list(cex=0),ylab=list(cex=0),
 #             scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),lwd=0),
 #       split=c(x=3,y=1,nx=3,ny=1))
-pdf("../../Draft/Phat_desikan_m5.pdf", family="CM Roman", width=4.5, height=3.5)
-levelplot(P_hat[1:n,n:1],col.regions=new.palette(20),xlab=list(cex=0),
+pdf("../../Draft/Phat_desikan_m5.pdf", family="Times", width=4.5, height=3.5)
+# pdf("../../Draft/Phat_desikan_m5.pdf", family="CM Roman", width=4.5, height=3.5)
+levelplot(P_hat[1:n,n:1],col.regions=new.palette(nColor),xlab=list(cex=0),
           ylab=list(cex=0),scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
           main=list(label=TeX('$\\hat{P}$ for Desikan with M=5')),
-          colorkey=list(labels=list()))
+          at=myAt, colorkey=myCkey, lwd=0)
 dev.off()
 print(dHat)
 
 
+if(require(tidyverse)){
+
+data_df <- data.frame(P=c(P), P_hat = c(P_hat), A_bar=c(A_bar))
+text_df <- data.frame(P=c(.99,0.01),estimate=c(.99,.01),which="A_bar",
+  label=c("12.6%","1.4%")) # Percent of edges that always appear and never appear
+gather(data_df,-P,key=which, value=estimate) %>%
+    ggplot(aes(x=P, color=which, shape=which, y=estimate-P))+
+    geom_point(alpha=.3)+
+    theme_classic()+
+    scale_color_discrete("")+scale_shape_discrete("")+
+    geom_text(aes(label=label,color=NA),data=text_df,color="black",fontface="bold",angle=-45)
+}
 
 ####### Plot the difference ######
 Diff_A_bar = abs(A_bar - P)
@@ -239,18 +307,18 @@ write(s,file="../../Result/Vertex_Diff_Between_desikan.csv")
 
 label_tex <- function (labels, multi_line = TRUE) 
 {
-    labels <- label_value(labels, multi_line = multi_line)
-    if (multi_line) {
-        lapply(unname(labels), lapply, function(values) {
-            c(TeX(string = as.character(values)))
-        })
-    }
-    else {
-        lapply(labels, function(values) {
-            values <- paste0("list(", values, ")")
-            lapply(values, function(expr) c(TeX(string = expr)))
-        })
-    }
+  labels <- label_value(labels, multi_line = multi_line)
+  if (multi_line) {
+    lapply(unname(labels), lapply, function(values) {
+      c(TeX(string = as.character(values)))
+    })
+  }
+  else {
+    lapply(labels, function(values) {
+      values <- paste0("list(", values, ")")
+      lapply(values, function(expr) c(TeX(string = expr)))
+    })
+  }
 }
 
 
@@ -283,7 +351,7 @@ df_ex %>% group_by(P_bin) %>% summarize(conditional_re=mean(A_bar_se)/mean(P_hat
   guides(size=FALSE)
 
 ggsave("../../Draft/difference_vs_truth_compare.pdf", plot=gg+theme(text=element_text(size=10,family="CM Roman")),
-    width=6.5,height=3.5)
+       width=6.5,height=3.5)
 
 ggplot(df_ex,aes(x=P,y=re_fitted))+geom_line()
 
@@ -307,5 +375,5 @@ gg <- ggplot(df_ex_melt, aes(x=P, linetype=estimator, y=(value-P)^2))+
 print(gg)
 
 ggsave("../../Draft/difference_vs_truth_compare.pdf", plot=gg+theme(text=element_text(size=10,family="CM Roman")),
-    width=6.5,height=3.5)
+       width=6.5,height=3.5)
 
