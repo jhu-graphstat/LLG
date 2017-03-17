@@ -29,17 +29,12 @@ vignettes/*.pdf
 Reference/
 
 # Tex
-Draft/*.bak
-Draft/*.aux
-Draft/*.bbl
-Draft/*.blg
-Draft/*.log
-Draft/*.out
-Draft/*.gz
-Outline/*.bak
-Outline/*.aux
-Outline/*.bbl
-Outline/*.blg
-Outline/*.log
-Outline/*.out
-Outline/*.gz
+*.bak
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.gz
+*.fls
+*.fdb_latexmk
