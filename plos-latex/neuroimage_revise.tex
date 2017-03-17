@@ -167,7 +167,7 @@ To better illustrate the idea, we take the CoRR brain graphs with Desikan atlase
 \caption{{\bf Heat maps of the population mean, the sample mean, and the estimator $\hat{P}$.}
 These heat maps indicate the population mean for the $454$ graphs (left), sample mean for the 5 sampled graphs (center), and $\hat{P}$ for the 5 sampled graphs with dimension $d=11$ selected using the Zhu and Ghodsi method (right). Details about how to construct $\hat{P}$ are discussed in Section~\ref{sec:phat}.
 Darker pixels indicate a lower probability of an edge between the given vertices.
-Note that $\hat{P}$ appears to better estimate the true probability matrix $P$, especially for edges within the two hemispheres, in the upper left and corresponding lower right block.
+Note that $\hat{P}$ appears to better estimate the true probability matrix $P$, especially for edges within the two hemispheres, in the upper left and corresponding lower right block. And by calculating the mean squared error based on this sample, we can also see that $\hat{P}$ (with mean squared error equal 0.017) outperforms $\bar{A}$ (with mean squared error equal 0.027).
 }
 \label{fig:Matrix_desikan_m5}
 \end{figure}
@@ -190,7 +190,7 @@ One example of an LPM which captures this middle ground is the random dot produc
 % In this paper, we analyze our estimator in terms of RDPG specifically.
 
 Using estimates of the latent positions based on a truncated eigen-decomposition of the adjacency matrix, we propose an estimator which captures the low-rank structure of the mean graph for the RDPG model. Details about this estimator are discussed in Section~\ref{sec:phat}.
-These estimates will improve performance since they will be biased towards the low-rank structure of the RDPG model and will have much lower overall variance than naive element-wise sample means. Here we consider the same random sample of size $M=5$ based on the Desikan atlas in Fig.~\ref{fig:Matrix_desikan_m5} and plot the estimate $\hat{P}$ in the right panel. Note that compared to the sample mean $\bar{A}$, $\hat{P}$ has a finer gradient of values which in this case leads to a more accurate estimate of the true probability matrix $P$, especially for edges between the two hemispheres, in the upper right and corresponding lower left block.
+These estimates will improve performance since they will be biased towards the low-rank structure of the RDPG model and will have much lower overall variance than naive element-wise sample means. Here we consider the same random sample of size $M=5$ based on the Desikan atlas in Fig.~\ref{fig:Matrix_desikan_m5} and plot the estimate $\hat{P}$ in the right panel. Note that compared to the sample mean $\bar{A}$, $\hat{P}$ has a finer gradient of values which in this case leads to a more accurate estimate of the true probability matrix $P$, especially for edges within the two hemispheres, in the upper left and corresponding lower right block.
 In this study, we show via theory, simulations, and real data analysis that the low-rank estimator frequently outperforms the element-wise sample mean, especially in small sample sizes.
 
 
