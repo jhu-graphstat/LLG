@@ -1,6 +1,6 @@
 rm(list = ls())
 # setwd("E:/GitHub/LLG/Code/R")
-# setwd("/Users/Runze/Documents/GitHub/LLG/Code/R")
+setwd("/Users/Runze/Documents/GitHub/LLG/Code/R")
 # setwd("/cis/home/rtang/LLG/Code/R")
 
 # dataName = "CPAC200"
@@ -18,15 +18,18 @@ isSVD = 0
 require(Matrix)
 library(latex2exp)
 source("function_collection.R")
-tmpList = read_data(dataName, DA=F)
+tmpList = read_data(dataName, threshold=0, DA=F)
 A_all = tmpList[[1]]
 n = tmpList[[2]]
 M = tmpList[[3]]
 rm(tmpList)
 
+# sum(add(A_all)/M == 1)/(n^2)
+# sum(add(A_all)/M == 0)/(n^2)
 
 library(lattice)
-new.palette=colorRampPalette(c("white","black"),space="rgb")
+# new.palette=colorRampPalette(c("white","black"),space="rgb")
+new.palette=colorRampPalette(c("black","white"),space="rgb")
 
 nColor <- 100
 myAt <- seq(0, 1, length.out=nColor)
@@ -51,10 +54,11 @@ dev.off()
 
 mse1 <- c()
 mse2 <- c()
-maxMSE <- 0
-minMSE <- Inf
+abs1 <- c()
+abs2 <- c()
+# maxMSE <- 0
+maxAbs <- 0
 sampleBest <- c()
-sampleWosrt <- c()
 source("getElbows.R")
 nElb = 3
 dMax = ceiling(n*3/5)
@@ -73,21 +77,24 @@ for (i in 1:100) {
   P_hat = regularize(Ahat)
   mse1[i] <- norm(A_bar - P, "F")^2
   mse2[i] <- norm(P_hat - P, "F")^2
-  if (mse1[i] - mse2[i] > maxMSE) {
-    maxMSE <- mse1[i] - mse2[i]
+  abs1[i] <- sum(abs(A_bar - P))
+  abs2[i] <- sum(abs(P_hat - P))
+  # if (mse1[i] - mse2[i] > maxMSE) {
+  #   maxMSE <- mse1[i] - mse2[i]
+  #   sampleBest <- sampleVec
+  # }
+  if (abs1[i] - abs2[i] > maxAbs) {
+    maxAbs <- abs1[i] - abs2[i]
     sampleBest <- sampleVec
-  }
-  if (mse1[i] - mse2[i] < minMSE) {
-    minMSE <- mse1[i] - mse2[i]
-    sampleWorst <- sampleVec
+    maxMSE1 <- mse1[i]
+    maxMSE2 <- mse2[i]
   }
 }
 # hist(mse1 - mse2, main = paste0("Histogram of ||Abar - P||_F^2 - ||Phat - P||_F^2"))
 
 # sampleVec = sample.int(M, m)
 # sampleVec <- c(292, 252, 296, 429, 96)
-# sampleVec <- sampleBest
-sampleVec <- sampleWorst
+sampleVec <- sampleBest
 A_bar = add(A_all[sampleVec])/m
 
 
@@ -134,11 +141,13 @@ print(dHat)
 
 
 if(require(tidyverse)){
-
-data_df <- data.frame(P=c(P), P_hat = c(P_hat), A_bar=c(A_bar))
-text_df <- data.frame(P=c(.99,0.01),estimate=c(.99,.01),which="A_bar",
-  label=c("12.6%","1.4%")) # Percent of edges that always appear and never appear
-gather(data_df,-P,key=which, value=estimate) %>%
+  library(tidyr)
+  library(dplyr)
+  library(ggplot2)
+  data_df <- data.frame(P=c(P), P_hat = c(P_hat), A_bar=c(A_bar))
+  text_df <- data.frame(P=c(.99,0.01),estimate=c(.99,.01),which="A_bar",
+                        label=c("12.6%","1.4%")) # Percent of edges that always appear and never appear
+  gather(data_df,-P,key=which, value=estimate) %>%
     ggplot(aes(x=P, color=which, shape=which, y=estimate-P))+
     geom_point(alpha=.3)+
     theme_classic()+

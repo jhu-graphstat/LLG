@@ -9,7 +9,7 @@ grid_arrange_shared_legend2 <- function(plots, nrows = 1, ncols = 2) {
 }
 
 # Read M graphs
-read_data <- function(dataName, DA=T, newGraph=F) {
+read_data <- function(dataName, threshold=0, DA=T, newGraph=F) {
   if (DA) {
     if (newGraph == F) {
       fileName = paste("../../Data/data_", dataName, "_DA.RData", sep="")
@@ -49,7 +49,9 @@ read_data <- function(dataName, DA=T, newGraph=F) {
           g = read_graph(paste("../../Data/", dataName, "_new/SWU4_", subjectsID[sub], 
                                "_", session, "_DTI_", dataName, ".graphml",sep=""), format = "graphml")
         }
-        A = as_adj(g, type="both", sparse=FALSE)
+        A = as_adj(g, attr="weight", type="both", sparse=FALSE)
+        A[A <= threshold] = 0;
+        A[A > threshold] = 1;
         if (DA) {
           A = diag_aug(A)
         }
