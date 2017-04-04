@@ -164,11 +164,15 @@ To better illustrate the idea, we take the CoRR brain graphs with Desikan atlase
 \includegraphics[height=.2\textheight]{P_desikan.pdf} \hspace{-35pt}
 \includegraphics[height=.201\textheight]{Abar_desikan_m5.pdf} \hspace{-35pt}
 \includegraphics[height=.205\textheight]{Phat_desikan_m5.pdf}
-\caption{{\bf Heat maps of the population mean, the sample mean, and the estimator $\hat{P}$.}
-These heat maps indicate the population mean for the $454$ graphs (left), sample mean for the 5 sampled graphs (center), and $\hat{P}$ for the 5 sampled graphs with dimension $d=11$ selected using the Zhu and Ghodsi method (right). Details about how to construct $\hat{P}$ are discussed in Section~\ref{sec:phat}.
-Darker pixels indicate a lower probability of an edge between the given vertices.
-Note that $\hat{P}$ appears to better estimate the true probability matrix $P$, especially for edges within the two hemispheres, in the upper left and corresponding lower right block. And by calculating the mean squared error based on this sample, we can also see that $\hat{P}$ (with mean squared error equal 0.017) outperforms $\bar{A}$ (with mean squared error equal 0.027).
-}
+\includegraphics[height=.2\textheight]{P_desikan.pdf} \hspace{-35pt}
+\includegraphics[height=.201\textheight]{Abar_desikan_m1.pdf} \hspace{-35pt}
+\includegraphics[height=.205\textheight]{Phat_desikan_m1.pdf}
+\caption{{\bf Heat maps of the population mean $P$, the sample mean $\bar{A}$, and the estimator $\hat{P}$ based on sample sizes $M = 1$ and $M = 5$.}
+The three heat maps in the upper level indicate the population mean for the $454$ graphs (left), sample mean for the 5 sampled graphs (center), and $\hat{P}$ for the same 5 sampled graphs with dimension $d=11$ selected using the Zhu and Ghodsi method (right). Details about how to construct $\hat{P}$ are discussed in Section~\ref{sec:phat}.
+Darker pixels indicate a higher probability of an edge between the given vertices.
+By calculating the mean squared error based on this sample, we can see that $\hat{P}$ (with mean squared error equals $0.017$) outperforms $\bar{A}$ (with mean squared error equals $0.027$).
+In order to see where the improvements are clearly, in the upper triangular of the heat maps for $\bar{A}$ and $\hat{P}$, we highlight the edges (79 edges highlighted for $\bar{A}$ and 20 for $\hat{P}$) which have absolute estimation error larger than $0.4$.
+In the lower level, we plot three heat maps in the similar way based on sample size $M = 1$. For this specific sampled graph, $\hat{P}$ is calculated with dimension $d = 14$. A clearly smoothing effect can be seen in the heat map of $\hat{P}$ (with mean squared error equals $0.041$), which leads to a much better estimate compared to $\bar{A}$ (with mean squared error equals $0.094$). Similarly, we use the same absolute estimation error threshold $0.4$ and highlight 471 edges for $\bar{A}$ and 168 edges for $\hat{P}$.}
 \label{fig:Matrix_desikan_m5}
 \end{figure}
 
@@ -176,7 +180,7 @@ Note that $\hat{P}$ appears to better estimate the true probability matrix $P$, 
 
 The element-wise sample mean is a reasonable estimator if we consider the general independent edge model (IEM) \citep{bollobas2007phase} without taking any additional structure into account. 
 However, with only a small sample size, such as when the sample size is much less than the number of vertices, it does not perform very well.
-Now take a sample of size $M=5$ in the CoRR dataset example with Desikan atlases mentioned above, then we calculate the entry-wise sample mean $\bar{A}$ and plot it in the center of Fig.~\ref{fig:Matrix_desikan_m5}. We can see $\bar{A}$ gives a fair estimate of $P$. However, since the sample size is small, there are a lot of pairs of vertices with no edges or 5 edges in the 5 observations. This leads to the white and black pixels in the image corresponding to $\bar{A}$.
+Now take a sample of size $M=5$ in the CoRR dataset example with Desikan atlases mentioned above, then we calculate the entry-wise sample mean $\bar{A}$ and plot it in the top middle of Fig.~\ref{fig:Matrix_desikan_m5}. We can see $\bar{A}$ gives a fair estimate of $P$. However, since the sample size is small, there are a lot of pairs of vertices with no edges or 5 edges in the 5 observations. This leads to the white and black pixels in the image corresponding to $\bar{A}$.
 On the other hand, $\hat{P}$ has a finer gradient of values which in this case leads to a more accurate estimate.
 Intuitively, an estimator incorporating structure in the distribution of graphs, assuming the estimator is computationally tractable, is preferable to the entry-wise sample mean. 
 In general, we don't have any knowledge about this structure so it can be hard to take advantage of in practice.
