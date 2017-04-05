@@ -18,7 +18,7 @@ for (m in mVec) {
     print(c(m, isSVD))
     
     nIter = 500
-    nCores = 12
+    nCores = 24
     
 #     dataName = "CPAC200"
         dataName = "desikan"
@@ -29,7 +29,7 @@ for (m in mVec) {
     
     
     source("function_collection.R")
-    tmpList = read_data(dataName, DA=F, newGraph=T)
+    tmpList = read_data(dataName, DA=F, newGraph=F)
     A_all = tmpList[[1]]
     n = tmpList[[2]]
     M = tmpList[[3]]
@@ -57,7 +57,7 @@ for (m in mVec) {
     # error_A_bar = out[1,,]
     # error_P_hat = out[2,,]
 
-    out <- mclapply(1:nIter, function(x) dim_brute2(M, m, dVec, A_all, A_sum, isSVD), 
+    out <- mclapply(1:nIter, function(x) dim_brute3(M, m, dVec, A_all, A_sum, isSVD), 
                     mc.cores=nCores)
     out = array(unlist(out), dim = c(nD+3, nIter))
     
@@ -109,9 +109,9 @@ for (m in mVec) {
     # }
     
     if (isSVD) {
-      fileName = paste("../../Result/result_", dataName, "_new_brute_", "m_", m, "_svd.RData", sep="")
+      fileName = paste("../../Result/result_", dataName, "_P1_brute_", "m_", m, "_svd.RData", sep="")
     } else {
-      fileName = paste("../../Result/result_", dataName, "_new_brute_", "m_", m, "_eig.RData", sep="")
+      fileName = paste("../../Result/result_", dataName, "_P1_brute_", "m_", m, "_eig.RData", sep="")
     }
     
     save(error_A_bar, error_P_hat, error_P_hat_ZG, error_P_hat_USVT, 

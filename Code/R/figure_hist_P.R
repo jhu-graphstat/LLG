@@ -24,7 +24,7 @@ pVec
 df <- data.frame(p=pVec)
 # label_y <- with(df, .75*yMax+.25*yMin)
 
-pp <- ggplot(df,aes(x=p))+
+gg <- ggplot(df,aes(x=p))+
   geom_histogram()+
   xlab("P") + ylab("count")+
   theme(panel.grid.major = element_line(colour="grey95"),
@@ -33,4 +33,6 @@ pp <- ggplot(df,aes(x=p))+
   theme(legend.position="none")+
   ggtitle("Histogram of P for Desikan")
 
-pp
+ggsave("../../Draft/P_hist_desikan.pdf",
+       plot=gg+theme(text=element_text(size=10,family="Times")),
+       width=4.5,height=3.5)

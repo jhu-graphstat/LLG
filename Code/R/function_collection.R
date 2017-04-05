@@ -242,6 +242,54 @@ dim_brute2 <- function(M, m, dVec, A_all, A_sum, isSVD=1) {
 }
 
 
+dim_brute3 <- function(M, m, dVec, A_all, A_sum, isSVD=1) {
+  source("getElbows.R")
+  source("USVT.R")
+  
+  result = rep(NaN, nD+1)
+  
+  sampleVec = sample.int(M, m)
+  A_bar = add(A_all[sampleVec])
+  P_bar = (A_sum - A_bar)/(M - m)
+  #   P_bar = A_sum/M
+  A_bar = A_bar/m
+  result[1] = norm(P_bar - A_bar, "F")/n/(n-1)
+  
+  nv_P1 = (A_bar == 1)
+  
+  dMax = max(dVec)
+  nD = length(dVec)
+  
+  A_bar_diag_aug = diag_aug(A_bar)
+  
+  # ZG
+  nElbow = 3
+  evalVec = ase(A_bar_diag_aug, ceiling(n*3/5), isSVD)[[1]]
+  dZG = getElbows(evalVec, n=nElbow, plot=F)[[nElbow]]
+  
+  # USVT
+  dUSVT = length(usvt(A_bar_diag_aug, 1, m)$d)
+  
+  A.ase = ase(diag_aug(A_bar), dMax, isSVD)
+  for (iD in 1:nD) {
+    d = dVec[iD]
+    if (d == 1)
+      Ahat = A.ase[[1]] * A.ase[[3]] %*% t(A.ase[[2]])
+    else
+      Ahat <- A.ase[[3]][,1:d] %*% diag(A.ase[[1]][1:d]) %*% t(A.ase[[2]][,1:d])
+    P_hat = regularize(Ahat)
+    P_hat[nv_P1] = 1
+    result[iD+1] = norm(P_bar - P_hat, "F")/n/(n-1)
+  }
+  
+  result[nD+2] = dZG
+  result[nD+3] = dUSVT
+  
+  return(result)
+}
+
+
+
 dim_brute_robust <- function(M, m, dVec, A_all, A_all_unlist, isSVD=1) {
   result = rep(NaN, nD+1)
   

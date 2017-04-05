@@ -18,26 +18,26 @@ for (m in mVec) {
     print(c(m, isSVD))
     
     nIter = 500
-    nCores = 12
+    nCores = 24
     
-#     dataName = "CPAC200"
-        dataName = "desikan"
-#         dataName = "JHU"
+    #     dataName = "CPAC200"
+    dataName = "desikan"
+    #         dataName = "JHU"
     #     dataName = "slab907"
     #     dataName = "slab1068"
     #     dataName = "Talairach"
     
     
     source("function_collection.R")
-    tmpList = read_data(dataName, DA=F, newGraph=T)
+    tmpList = read_data(dataName, DA=F, newGraph=F)
     A_all = tmpList[[1]]
     n = tmpList[[2]]
     M = tmpList[[3]]
     rm(tmpList)
     
-#     nZeroVec <- sapply(1:M, function(ind) {sum(A_all[[ind]] == 0)})
-#     hist(nZeroVec)
-
+    #     nZeroVec <- sapply(1:M, function(ind) {sum(A_all[[ind]] == 0)})
+    #     hist(nZeroVec)
+    
     dVec = 1:n
     nD = length(dVec)
     
@@ -56,8 +56,8 @@ for (m in mVec) {
     # out = array(unlist(out), dim = c(2, nD, nIter))
     # error_A_bar = out[1,,]
     # error_P_hat = out[2,,]
-
-    out <- mclapply(1:nIter, function(x) dim_brute2(M, m, dVec, A_all, A_sum, isSVD), 
+    
+    out <- mclapply(1:nIter, function(x) dim_brute3(M, m, dVec, A_all, A_sum, isSVD), 
                     mc.cores=nCores)
     out = array(unlist(out), dim = c(nD+3, nIter))
     
@@ -109,9 +109,9 @@ for (m in mVec) {
     # }
     
     if (isSVD) {
-      fileName = paste("../../Result/result_", dataName, "_new_brute_", "m_", m, "_svd.RData", sep="")
+      fileName = paste("../../Result/result_", dataName, "_P1_brute_", "m_", m, "_svd.RData", sep="")
     } else {
-      fileName = paste("../../Result/result_", dataName, "_new_brute_", "m_", m, "_eig.RData", sep="")
+      fileName = paste("../../Result/result_", dataName, "_P1_brute_", "m_", m, "_eig.RData", sep="")
     }
     
     save(error_A_bar, error_P_hat, error_P_hat_ZG, error_P_hat_USVT, 
