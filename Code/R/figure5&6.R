@@ -139,6 +139,10 @@ levelplot(P_hat[1:n,n:1],col.regions=new.palette(nColor),xlab=list(cex=0),
 dev.off()
 print(dHat)
 
+maxMSE1/n/(n-1)
+maxMSE2/n/(n-1)
+
+
 
 if(require(tidyverse)){
   library(tidyr)
