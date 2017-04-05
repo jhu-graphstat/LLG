@@ -210,7 +210,7 @@ We conclude with a discussion of these results in Section~\ref{sec:discussion}  
 
 \section{Models}
 \label{section:model}
-This work considers the scenario of having $M$ graphs, represented as adjacency matrices, $A^{(1)},A^{(2)},\dotsc,A^{(M)}$, each having $N$ vertices with $A^{(m)}\in\{0,1\}^{N\times N}$ for each $m$..
+This work considers the scenario of having $M$ graphs, represented as adjacency matrices, $A^{(1)},A^{(2)},\dotsc,A^{(M)}$, each having $N$ vertices with $A^{(m)}\in\{0,1\}^{N\times N}$ for each $m$.
 We assume there is a known correspondence for vertices in different graphs, so that vertex $i$ in graph $m$ corresponds to vertex $i$ in graph $m'$ for any $i$, $m$, $m'$.
 The graphs we consider are undirected and unweighted with no self-loops, so each $A^{(m)}$ is a binary symmetric matrix with zeros along the diagonal. 
 In connectomics, the  brain imaging data for each subject can be processed  to output a graph, where each vertex represents a well-defined anatomical region present in each subject.
@@ -250,7 +250,7 @@ Formally, let $\mathcal{X} \subset \Re^d$ be a set such that $x, y \in \mathcal{
 Let $X_1,\dotsc,X_N\in \mathcal{X}$ be the column vectors representing the $N$ latent positions and write $X = [X_1|\cdots|X_N]^{\top} \in \Re^{N \times d}$.
 A random graph $G$ with adjacency matrix $A$ is said to be an RDPG if for any adjacency matrix $a$ of the same size,
 \[
-    \Pr[A = a|X] = \prod_{i<j} (X_i^{\top} X_j)^{a_{ij}} ( 1 - (X_i^{\top} X_j))^{1 - a_{ij}}.
+    \Pr[A = a|X] = \prod_{i<j} (X_i^{\top} X_j)^{a_{ij}} ( 1 - X_i^{\top} X_j)^{1 - a_{ij}}.
 \]
 In the RDPG model, each vertex $i$ is associated with latent position $X_i$, and conditioned on the latent positions $X$, the entries $A_{ij}$ are distributed independently as $ \text{Bernoulli}(X_i^{\top} X_j)$ for $i<j$.
 Note that the probability matrix is the outer product of the latent position matrix with itself, $P = X X^{\top}$.
@@ -264,7 +264,7 @@ These properties lead us to our proposed estimator.
 \label{section:sbm_rdpg}
 One of the most important structures for graphs is the community structure in which vertices are clustered into different communities such that vertices of the same community behave similarly. This structural property is captured by the stochastic blockmodel (SBM) \citep{holland1983stochastic}, where each vertex is assigned to a block and the probability that an edge exists between two vertices depends only on their respective block memberships.
 
-Reviewer 3 mentioned the following references. \cite{ambroise2012new, wolfe2013nonparametric, choi2012stochastic, picard2009deciphering, zanghi2008fast, zanghi2010clustering, pavlovic2014stochastic, daudin2008mixture}.
+% Reviewer 3 mentioned the following references. \cite{ambroise2012new, wolfe2013nonparametric, choi2012stochastic, picard2009deciphering, zanghi2008fast, zanghi2010clustering, pavlovic2014stochastic, daudin2008mixture}.
 
 
 The SBM is parameterized by the number of blocks $K$ (generally much less than the number of vertices $N$), the block probability matrix $B \in [0,1]^{K \times K}$, and the vector of block memberships
@@ -550,7 +550,7 @@ B = \begin{bmatrix}
 \end{bmatrix},
 \label{eq:sim_setting}
 \end{equation}
-so that $|\{i:\tau_i=1\}|=|\{i:\tau_i=2\}|$ for each $N$. (THIS IS NOT TRUE?)
+so that $|\{i:\tau_i=1\}| \approx |\{i:\tau_i=2\}|$, especially for large $N$.
 Note that this simulation only focuses on the rank-2 setting primarily for the interpretability.
 When calculating $\hat{P}$, we omit the dimension selection step from Algorithm~\ref{algo:basic} and instead use the true dimension $d = \mathrm{rank}(B) = 2$.
 Fig.~\ref{fig:RErho} shows $2/\rho_1$ and $1/\rho_1+1/\rho_2$, the scaled asymptotic RE for pairs of vertices both in block one and pairs of vertices in different blocks, respectively, in the 2-block SBM we specified earlier.
@@ -802,11 +802,31 @@ There are 18 edges from $\bar{A}$ and 6 edges from $\hat{P}$ being highlighted i
 Note that approximately $13\%$ of all pairs of vertices are adjacent in all $454$ graphs and hence $\bar{A}$ will always have zero error for those pairs of vertices.
 Nonetheless, $\hat{P}$ typically outperforms $\bar{A}$.
 
-To investigate the difference in performance with respect to the geometry of the brain, 
-in Fig.~\ref{fig:Diff_between_desikan} we plot the 50 edges with the largest differences $|\bar{A}_{ij} - P_{ij}| - |\hat{P}_{ij} - P_{ij}|$ according to the location of the corresponding regions in the brain. Red edges indicate that $\hat{P}$ overestimates $P$, while blue means that $\hat{P}$ underestimates $P$. The edge width is determined by the estimation error for $\hat{P}$, where pairs with larger estimation error are represented by thicker lines.
+\begin{figure}
+\begin{center}
+  \includegraphics[height=.325\linewidth]{Diff2_desikan_m5.pdf}\hspace{-40pt}
+  \includegraphics[height=.33\linewidth]{Diff3_desikan_m5.pdf}\hspace{-32pt}
+  \includegraphics[height=.33\linewidth]{Diff1_desikan_m5.pdf}
+\end{center}
+\caption{{\bf Heat plots of absolute estimation error for $\bm{\bar{A}}$ and $\bm{\hat{P}}$ (lower triangle) and absolute errors above 0.4 (upper triangle).}
+These heat plots show the absolute estimation error $|\bar{A} - P|$, $|\hat{P} - P|$ and $|\bar{A} - \hat{P}|$ for a sample of size $M=5$ from the Desikan dataset.
+The embedding dimension for $\hat{P}$ is $d=11$ selected by the 3rd elbow of the ZG method. The lower triangular matrix shows the actual absolute difference, while the upper triangular matrix only highlights the edges with absolute differences larger than $0.4$. The fact that 18 edges from $\bar{A}$ are highlighted and only six edges from $\hat{P}$ are highlighted indicates that $\hat{P}$ has fewer large outliers compared to $\bar{A}$.
+}
+\label{fig:Diff_desikan_m5}
+\end{figure}
+
+To investigate the difference in performance with respect to the geometry of the brain, in Fig.~\ref{fig:Diff_between_desikan} we plot the 50 edges with the largest differences $|\bar{A}_{ij} - P_{ij}| - |\hat{P}_{ij} - P_{ij}|$ according to the location of the corresponding regions in the brain. Red edges indicate that $\hat{P}$ overestimates $P$, while blue means that $\hat{P}$ underestimates $P$. The edge width is determined by the estimation error for $\hat{P}$, where pairs with larger estimation error are represented by thicker lines.
 We also highlight the five regions corresponding to vertices that contribute most to the difference, meaning the vertices $i$ with the largest value of $\sum_j (|\bar{A}_{ij} - P_{ij}| - |\hat{P}_{ij} - P_{ij}|)$.
 Notably, three of these top five regions form a contiguous group of regions.
 The top five regions are the inferior temporal, middle temporal, and transverse temporal regions in the left hemisphere and the parahippocampal and parsopercularis regions in the right hemisphere of the Desikan atlas.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=1\textwidth]{Diff_between_desikan.png}
+\caption{{\bf Top 5 regions of the brain (vertices in graphs) and top 50 connections between regions (edges in graphs) with the largest differences $\bm{|\bar{A}_{ij} - P_{ij}| - |\hat{P}_{ij} - P_{ij}|}$.}
+Red edges indicate that $\hat{P}$ overestimate $P$ while blue means that $\hat{P}$ underestimates $P$. The edge width is determined by the estimation error. Connections with larger estimation error are represented by thicker lines. This figure shows the regions and connections of the brain where $\hat{P}$ outperforms $\bar{A}$ the most for estimating $P$.}
+\label{fig:Diff_between_desikan}
+\end{figure}
 
 We plot the histogram of $P$, i.e. the entry-wise mean of all 454 graphs based on the Desikan atlas, as in Fig.~\ref{fig:P_hist_desikan}. Clearly we can see more edge probabilities are concentrated on both sides, i.e. close to 0 or 1. In particular, 12.8\% of the edges has probability equals to 1 exactly. For these edges, MLE $\bar{A}$ always recover the probability 1 exactly even with only 1 observation, while $\hat{P}$ will give a less accurate estimate because of the smoothing effect. So the CoRR dataset we consider is highly preferable to $\bar{A}$ compared to $\hat{P}$. However, even in this situation, $\hat{P}$ still outperforms $\bar{A}$ when the sample size is relatively small.
 
@@ -822,31 +842,6 @@ These results demonstrate that for small sample sizes, such as $M=1$ or $M=5$, a
 Importantly, this improvement is robust to the embedding dimension provided the dimension is not underestimated.
 We should note that though the total error for $\hat{P}$ is smaller in this case, for certain entries $\bar{A}$ does perform better.
 For example, there are some pairs of vertices that are adjacent for all samples in the population and for these pairs $\bar{A}$ will always perform better than $\hat{P}$. 
-
-
-
-\begin{figure}
-
-\begin{center}
-  \includegraphics[height=.33\linewidth]{Diff2_desikan_m5.pdf}\hspace{-40pt}
-  \includegraphics[height=.33\linewidth]{Diff3_desikan_m5.pdf}\hspace{-32pt}
-  \includegraphics[height=.33\linewidth]{Diff1_desikan_m5.pdf}
-\end{center}
-
-\caption{{\bf Heat plot of absolute estimation error for $\bm{\bar{A}}$ and $\bm{\hat{P}}$ (lower triangle) and absolute errors above 0.4 (upper triangle).}
-These heat plots show the absolute estimation error $|\bar{A} - P|$, $|\hat{P} - P|$ and $|\bar{A} - \hat{P}|$ for a sample of size $M=5$ from the Desikan dataset.
-The embedding dimension for $\hat{P}$ is $d=11$ selected by the 3rd elbow of the ZG method. The lower triangular matrix shows the actual absolute difference, while the upper triangular matrix only highlights the edges with absolute differences larger than $0.4$. The fact that 18 edges from $\bar{A}$ are highlighted and only six edges from $\hat{P}$ are highlighted indicates that $\hat{P}$ has fewer large outliers compared to $\bar{A}$.
-}
-\label{fig:Diff_desikan_m5}
-\end{figure}
-
-\begin{figure}[!htbp]
-\centering
-\includegraphics[width=1\textwidth]{Diff_between_desikan.png}
-\caption{{\bf Top 5 regions of the brain (vertices in graphs) and top 50 connections between regions (edges in graphs) with the largest differences $\bm{|\bar{A}_{ij} - P_{ij}| - |\hat{P}_{ij} - P_{ij}|}$.}
-Red edges indicate that $\hat{P}$ overestimate $P$ while blue means that $\hat{P}$ underestimates $P$. The edge width is determined by the estimation error. Connections with larger estimation error are represented by thicker lines. This figure shows the regions and connections of the brain where $\hat{P}$ outperforms $\bar{A}$ the most for estimating $P$.}
-\label{fig:Diff_between_desikan}
-\end{figure}
 
 
 %\begin{figure}[!htbp]
