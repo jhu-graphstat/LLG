@@ -813,6 +813,16 @@ We also highlight the five regions corresponding to vertices that contribute mos
 Notably, three of these top five regions form a contiguous group of regions.
 The top five regions are the inferior temporal, middle temporal, and transverse temporal regions in the left hemisphere and the parahippocampal and parsopercularis regions in the right hemisphere of the Desikan atlas.
 
+We plot the histogram of $P$, i.e. the entry-wise mean of all 454 graphs based on the Desikan atlas, as in Fig.~\ref{fig:P_hist_desikan}. Clearly we can see more edge probabilities are concentrated on both sides, i.e. close to 0 or 1. In particular, 12.8\% of the edges has probability equals to 1 exactly. For these edges, MLE $\bar{A}$ always recover the probability 1 exactly even with only 1 observation, while $\hat{P}$ will give a less accurate estimate because of the smoothing effect. So the CoRR dataset we consider is highly preferable to $\bar{A}$ compared to $\hat{P}$. However, even in this situation, $\hat{P}$ still outperforms $\bar{A}$ when the sample size is relatively small.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=1\textwidth]{P_hist_desikan.pdf}
+\caption{{\bf Histogram of $P$ for Desikan atlas.}
+This figure shows the histogram of $P$, i.e. the entry-wise mean of all 454 graphs based on the Desikan atlas. More edge probabilities of $P$ are concentrated on both sides, i.e. close to 0 or 1. In particular, 12.8\% of the edges has probability equals to 1 exactly.}
+\label{fig:P_hist_desikan}
+\end{figure}
+
 These results demonstrate that for small sample sizes, such as $M=1$ or $M=5$, and for the atlases with a larger number of vertices, $\hat{P}$ gives a better estimate than $\bar{A}$ for the CoRR dataset.
 Importantly, this improvement is robust to the embedding dimension provided the dimension is not underestimated.
 We should note that though the total error for $\hat{P}$ is smaller in this case, for certain entries $\bar{A}$ does perform better.
