@@ -7,7 +7,7 @@ dataName = "desikan"
 
 set.seed(12345)
 
-m = 1
+m = 5
 isSVD = 0
 
 require(Matrix)
@@ -57,39 +57,39 @@ sampleBest <- c()
 source("getElbows.R")
 nElb = 3
 dMax = ceiling(n*3/5)
-for (i in 1:100) {
-  print(i)
-  sampleVec = sample.int(M, m)
-  A_bar = add(A_all[sampleVec])/m
-  evalVec = ase(A_bar, dMax, isSVD)[[1]]
-  dHat = getElbows(evalVec, n=nElb, plot=F)[[nElb]]
-  A.ase = ase(diag_aug(A_bar), dHat, isSVD)
-  if (dHat == 1) {
-    Ahat = A.ase[[1]] * A.ase[[3]] %*% t(A.ase[[2]])
-  } else {
-    Ahat <- A.ase[[3]][,1:dHat] %*% diag(A.ase[[1]][1:dHat]) %*% t(A.ase[[2]][,1:dHat])
-  }
-  P_hat = regularize(Ahat)
-  mse1[i] <- norm(A_bar - P, "F")^2
-  mse2[i] <- norm(P_hat - P, "F")^2
-  abs1[i] <- sum(abs(A_bar - P))
-  abs2[i] <- sum(abs(P_hat - P))
-  # if (mse1[i] - mse2[i] > maxMSE) {
-  #   maxMSE <- mse1[i] - mse2[i]
-  #   sampleBest <- sampleVec
-  # }
-  if (abs1[i] - abs2[i] > maxAbs) {
-    maxAbs <- abs1[i] - abs2[i]
-    sampleBest <- sampleVec
-    maxMSE1 <- mse1[i]
-    maxMSE2 <- mse2[i]
-  }
-}
+# for (i in 1:100) {
+#   print(i)
+#   sampleVec = sample.int(M, m)
+#   A_bar = add(A_all[sampleVec])/m
+#   evalVec = ase(A_bar, dMax, isSVD)[[1]]
+#   dHat = getElbows(evalVec, n=nElb, plot=F)[[nElb]]
+#   A.ase = ase(diag_aug(A_bar), dHat, isSVD)
+#   if (dHat == 1) {
+#     Ahat = A.ase[[1]] * A.ase[[3]] %*% t(A.ase[[2]])
+#   } else {
+#     Ahat <- A.ase[[3]][,1:dHat] %*% diag(A.ase[[1]][1:dHat]) %*% t(A.ase[[2]][,1:dHat])
+#   }
+#   P_hat = regularize(Ahat)
+#   mse1[i] <- norm(A_bar - P, "F")^2
+#   mse2[i] <- norm(P_hat - P, "F")^2
+#   abs1[i] <- sum(abs(A_bar - P))
+#   abs2[i] <- sum(abs(P_hat - P))
+#   # if (mse1[i] - mse2[i] > maxMSE) {
+#   #   maxMSE <- mse1[i] - mse2[i]
+#   #   sampleBest <- sampleVec
+#   # }
+#   if (abs1[i] - abs2[i] > maxAbs) {
+#     maxAbs <- abs1[i] - abs2[i]
+#     sampleBest <- sampleVec
+#     maxMSE1 <- mse1[i]
+#     maxMSE2 <- mse2[i]
+#   }
+# }
 # hist(mse1 - mse2, main = paste0("Histogram of ||Abar - P||_F^2 - ||Phat - P||_F^2"))
 
-# sampleVec = sample.int(M, m)
+sampleVec = sample.int(M, m)
 # sampleVec <- c(292, 252, 296, 429, 96)
-sampleVec <- sampleBest
+# sampleVec <- sampleBest
 A_bar = add(A_all[sampleVec])/m
 
 valLow = 0.4
@@ -141,18 +141,6 @@ levelplot(P_hat_combine[1:n,n:1],col.regions=new.palette(nColor),xlab=list(cex=0
           at=myAt, colorkey=myCkey, lwd=0)
 dev.off()
 print(dHat)
-
-
-Diff_Between = abs(A_bar - P_hat)
-nv = (Diff_Between<valLow)
-nv[upper.tri(nv,diag=T)] = FALSE
-Diff_Between[nv] = 0
-pdf(paste0("../../Draft/Diff1_desikan_m", m, ".pdf"), family="Times", width=4, height=3.5)
-levelplot(Diff_Between[1:n,n:1],col.regions=new.palette(nColor),xlab=list(cex=0),
-          ylab=list(cex=0),scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
-          main=list(label=TeX('$|\\bar{A} - \\hat{P}|$ for Desikan with M=5')),
-          at=myAt, colorkey=F, lwd=0)
-dev.off()
 
 norm(A_bar - P, "F")^2/n/(n-1)
 norm(P_hat - P, "F")^2/n/(n-1)
