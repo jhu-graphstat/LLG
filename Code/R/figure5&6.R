@@ -28,8 +28,8 @@ rm(tmpList)
 # sum(add(A_all)/M == 0)/(n^2)
 
 library(lattice)
-# new.palette=colorRampPalette(c("white","black"),space="rgb")
-new.palette=colorRampPalette(c("black","white"),space="rgb")
+new.palette=colorRampPalette(c("white","black"),space="rgb")
+# new.palette=colorRampPalette(c("black","white"),space="rgb")
 
 nColor <- 100
 myAt <- seq(0, 1, length.out=nColor)
@@ -186,15 +186,15 @@ valLow = 0.4
 
 
 
-colMin <- min(Diff_A_bar, Diff_P_hat, Diff_Between)
-colMax <- max(Diff_A_bar, Diff_P_hat, Diff_Between)
-myAt <- seq(colMin, colMax, length.out=20)
-myCkey <- list(at=myAt)
+# colMin <- min(Diff_A_bar, Diff_P_hat, Diff_Between)
+# colMax <- max(Diff_A_bar, Diff_P_hat, Diff_Between)
+# myAt <- seq(colMin, colMax, length.out=20)
+# myCkey <- list(at=myAt)
 
 nv = (Diff_A_bar<valLow)
 nv[upper.tri(nv,diag=T)] = FALSE
 Diff_A_bar[nv] = 0
-pdf("../../Draft/Diff2_desikan_m5.pdf", family="CM Roman", width=4, height=3.5)
+pdf("../../Draft/Diff2_desikan_m5.pdf", family="Times", width=4, height=3.5)
 levelplot(Diff_A_bar[1:n,n:1],col.regions=new.palette(20),xlab=list(cex=0),
           ylab=list(cex=0),scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
           main=list(label=TeX('$|\\bar{A} - P|$ for Desikan with M=5')),
@@ -204,7 +204,7 @@ dev.off()
 nv = (Diff_P_hat<valLow)
 nv[upper.tri(nv,diag=T)] = FALSE
 Diff_P_hat[nv] = 0
-pdf("../../Draft/Diff3_desikan_m5.pdf", family="CM Roman", width=4.5, height=3.5)
+pdf("../../Draft/Diff3_desikan_m5.pdf", family="Times", width=4.5, height=3.5)
 levelplot(Diff_P_hat[1:n,n:1],col.regions=new.palette(20),xlab=list(cex=0),
           ylab=list(cex=0),scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
           main=list(label=TeX('$|\\hat{P} - P|$ for Desikan with M=5')),
@@ -214,7 +214,7 @@ dev.off()
 nv = (Diff_Between<valLow)
 nv[upper.tri(nv,diag=T)] = FALSE
 Diff_Between[nv] = 0
-pdf("../../Draft/Diff1_desikan_m5.pdf", family="CM Roman", width=4, height=3.5)
+pdf("../../Draft/Diff1_desikan_m5.pdf", family="Times", width=4, height=3.5)
 levelplot(Diff_Between[1:n,n:1],col.regions=new.palette(20),xlab=list(cex=0),
           ylab=list(cex=0),scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
           main=list(label=TeX('$|\\bar{A} - \\hat{P}|$ for Desikan with M=5')),
