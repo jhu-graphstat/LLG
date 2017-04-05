@@ -180,20 +180,12 @@ In the lower level, we plot three heat maps in the similar way based on sample s
 
 The element-wise sample mean is a reasonable estimator if we consider the general independent edge model (IEM) \citep{bollobas2007phase} without taking any additional structure into account. 
 However, with only a small sample size, such as when the sample size is much less than the number of vertices, it does not perform very well.
-Now take a sample of size $M=5$ in the CoRR dataset example with Desikan atlases mentioned above, then we calculate the entry-wise sample mean $\bar{A}$ and plot it in the top middle of Fig.~\ref{fig:Matrix_desikan_m5}. Darker pixels indicate a higher probability of an edge between the given vertices.
-We can see $\bar{A}$ gives a fair estimate of $P$. However, since the sample size is small, it has high variances. On the other hand, the estimator $\hat{P}$ we will propose in this paper has a finer gradient of values which in this case leads to a more accurate estimate. We plot the heat map of $\hat{P}$ in the top right of Fig.~\ref{fig:Matrix_desikan_m5}.
-By calculating the mean squared error based on this sample, we can see that $\hat{P}$ (with mean squared error equals $0.017$) outperforms $\bar{A}$ (with mean squared error equals $0.027$).
-In order to see where the improvements are clearly, in the upper triangular of the heat maps for $\bar{A}$ and $\hat{P}$, we highlight the edges (79 edges highlighted for $\bar{A}$ and 20 for $\hat{P}$) which have absolute estimation error larger than $0.4$.
-The smoothing effect is much more obvious when we decrease the sample size from $M = 5$ to $M = 1$.
-In the lower level of Fig.\ref{fig:Matrix_desikan_m5}, we plot three heat maps in the similar way based on sample size $M = 1$. Since there is only one observed graph, $\bar{A}$ has edges with binary weights. However, $\hat{P}$ smooth the estimate (with mean squared error equals $0.041$), which leads to a much better estimate compared to $\bar{A}$ (with mean squared error equals $0.094$). Similarly, we use the same absolute estimation error threshold $0.4$ and highlight 471 edges for $\bar{A}$ and 168 edges for $\hat{P}$.
+Now take a sample of size $M=5$ in the CoRR dataset example with Desikan atlases mentioned above, then we calculate the entry-wise sample mean $\bar{A}$ and plot it in the top middle panel of Fig.~\ref{fig:Matrix_desikan_m5}. Darker pixels indicate a higher probability of an edge between the given vertices.
+We can see $\bar{A}$ gives a fair estimate of $P$. However, there are still an amount of edges being estimated very inaccurately. In order to see these inaccurate estimates clearly, in the upper triangular of the heat maps for $\bar{A}$, we highlight the 79 edges which have absolute estimation error larger than $0.4$.
+When the sample size is small, the performance of $\bar{A}$ degrades due to its high variances. Such phenomenon is most obvious when we decrease the sample size from $M = 5$ to $M = 1$.
+In the bottome middle panel of Fig.~\ref{fig:Matrix_desikan_m5}, we plot the heat map of $\bar{A}$ based on sample size $M = 1$. Since there is only one observed graph, $\bar{A}$ is binary and thus very bumpy. Similarly, we use the same absolute estimation error threshold $0.4$ and highlight 471 edges in the upper triangular.
 Intuitively, an estimator incorporating structure in the distribution of graphs, assuming the estimator is computationally tractable, is preferable to the entry-wise sample mean. 
 In general, we don't have any knowledge about this structure so it can be hard to take advantage of in practice.
-
-
-
-
-
-
 
 
 
@@ -204,7 +196,10 @@ One example of an LPM which captures this middle ground is the random dot produc
 % In this paper, we analyze our estimator in terms of RDPG specifically.
 
 Using estimates of the latent positions based on a truncated eigen-decomposition of the adjacency matrix, we propose an estimator which captures the low-rank structure of the mean graph for the RDPG model. Details about this estimator are discussed in Section~\ref{sec:phat}.
-These estimates will improve performance since they will be biased towards the low-rank structure of the RDPG model and will have much lower overall variance than naive element-wise sample means. Here we consider the same random sample of size $M=5$ based on the Desikan atlas in Fig.~\ref{fig:Matrix_desikan_m5} and plot the estimate $\hat{P}$ in the right panel. Note that compared to the sample mean $\bar{A}$, $\hat{P}$ has a finer gradient of values which in this case leads to a more accurate estimate of the true probability matrix $P$, especially for edges within the two hemispheres, in the upper left and corresponding lower right block.
+These estimates will improve performance since they will be biased towards the low-rank structure of the RDPG model and will have much lower overall variance than naive element-wise sample means. Here we consider the same random sample of size $M=5$ based on the Desikan atlas in Fig.~\ref{fig:Matrix_desikan_m5} and plot the estimate $\hat{P}$ in the top right panel. Note that compared to the sample mean $\bar{A}$ (with mean squared error equals $0.027$), $\hat{P}$ (with mean squared error equals $0.017$) has a finer gradient of values which in this case leads to a more accurate estimate of the true probability matrix $P$. In order to see where the improvements are clearly, in the upper triangular of the heat map for $\hat{P}$, we also highlight the 20 edges which have absolute estimation error larger than $0.4$, where 79 edges are highlighted for $\bar{A}$ based on the same threshold. 
+The smoothing effect is much more obvious when we decrease the sample size from $M = 5$ to $M = 1$. In the lower level of Fig.\ref{fig:Matrix_desikan_m5}, we plot the heat map of $\hat{P}$ based on sample size $M = 1$. From the figure, we can see that $\hat{P}$ smooths the estimate, especially for edges across the two hemispheres, in the lower left and corresponding upper right block (which is not shown in the heat map). Based on the calculations, $\hat{P}$ (with mean squared error equals $0.041$) outperforms $\bar{A}$ (with mean squared error equals $0.094$). Similarly, we use the same absolute estimation error threshold $0.4$ and highlight the 168 edges for $\hat{P}$.
+
+
 In this study, we show via theory, simulations, and real data analysis that the low-rank estimator frequently outperforms the element-wise sample mean, especially in small sample sizes.
 
 
