@@ -92,15 +92,23 @@ sampleVec = sample.int(M, m)
 # sampleVec <- sampleBest
 A_bar = add(A_all[sampleVec])/m
 
+# valLow = 0.4
+# Diff_A_bar = abs(A_bar - P)
+# nv = (Diff_A_bar < valLow)
+# sum((Diff_A_bar >= valLow))/2
+# Diff_A_bar[nv] = 0
+# 
+# nv = lower.tri(A_bar, diag = T)
+# A_bar_combine = A_bar
+# A_bar_combine[nv] = Diff_A_bar[nv]
+
 valLow = 0.4
 Diff_A_bar = abs(A_bar - P)
-nv = (Diff_A_bar < valLow)
+nv1 = (Diff_A_bar < valLow)
 sum((Diff_A_bar >= valLow))/2
-Diff_A_bar[nv] = 0
-
-nv = lower.tri(A_bar, diag = T)
+nv2 = lower.tri(A_bar, diag = T)
 A_bar_combine = A_bar
-A_bar_combine[nv] = Diff_A_bar[nv]
+A_bar_combine[nv1 & nv2] = 0
 
 pdf(paste0("../../Draft/Abar_desikan_m", m, ".pdf"), family="Times", width=4, height=3.5)
 levelplot(A_bar_combine[1:n,n:1],col.regions=new.palette(nColor),xlab=list(cex=0),
@@ -125,14 +133,22 @@ if (dHat == 1) {
 }
 P_hat = regularize(Ahat)
 
-Diff_P_hat = abs(P_hat - P)
-nv = (Diff_P_hat < valLow)
-sum((Diff_P_hat >= valLow))/2
-Diff_P_hat[nv] = 0
+# Diff_P_hat = abs(P_hat - P)
+# nv = (Diff_P_hat < valLow)
+# sum((Diff_P_hat >= valLow))/2
+# Diff_P_hat[nv] = 0
+# 
+# nv = lower.tri(P_hat, diag = T)
+# P_hat_combine = P_hat
+# P_hat_combine[nv] = Diff_P_hat[nv]
 
-nv = lower.tri(P_hat, diag = T)
+Diff_P_hat = abs(P_hat - P)
+nv1 = (Diff_P_hat < valLow)
+sum((Diff_P_hat >= valLow))/2
+nv2 = lower.tri(P_hat, diag = T)
 P_hat_combine = P_hat
-P_hat_combine[nv] = Diff_P_hat[nv]
+P_hat_combine[nv1 & nv2] = 0
+
 
 pdf(paste0("../../Draft/Phat_desikan_m", m, ".pdf"), family="Times", width=4.5, height=3.5)
 levelplot(P_hat_combine[1:n,n:1],col.regions=new.palette(nColor),xlab=list(cex=0),
@@ -142,5 +158,7 @@ levelplot(P_hat_combine[1:n,n:1],col.regions=new.palette(nColor),xlab=list(cex=0
 dev.off()
 print(dHat)
 
-norm(A_bar - P, "F")^2/n/(n-1)
-norm(P_hat - P, "F")^2/n/(n-1)
+MSE_Abar = norm(A_bar - P, "F")^2/n/(n-1)
+MSE_Phat = norm(P_hat - P, "F")^2/n/(n-1)
+(MSE_Abar - MSE_Phat)/MSE_Abar
+
