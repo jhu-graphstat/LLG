@@ -1,0 +1,54 @@
+This is BibTeX, Version 0.99d (TeX Live 2014)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: neuroimage_submission.aux
+The style file: plainnat.bst
+Database file #1: Bib.bib.bib
+Warning--to sort, need author or key in neurodata
+Warning--empty year in neurodata
+Warning--empty journal in kiar2016graph
+Warning--empty journal in kiar2016m2g
+Warning--can't use both volume and number fields in nickel2007random
+Warning--empty publisher in nickel2007random
+Warning--there's a number but no volume in trunk1979problem
+You've used 27 entries,
+            2773 wiz_defined-function locations,
+            765 strings with 10426 characters,
+and the built_in function-call counts, 14011 in all, are:
+= -- 1237
+> -- 901
+< -- 22
++ -- 306
+- -- 279
+* -- 1155
+:= -- 2130
+add.period$ -- 86
+call.type$ -- 27
+change.case$ -- 171
+chr.to.int$ -- 27
+cite$ -- 62
+duplicate$ -- 616
+empty$ -- 1073
+format.name$ -- 319
+if$ -- 2945
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 28
+newline$ -- 144
+num.names$ -- 104
+pop$ -- 355
+preamble$ -- 1
+purify$ -- 145
+quote$ -- 0
+skip$ -- 502
+stack$ -- 0
+substring$ -- 508
+swap$ -- 89
+text.length$ -- 9
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 287
+warning$ -- 7
+while$ -- 118
+width$ -- 0
+write$ -- 356
+(There were 7 warnings)

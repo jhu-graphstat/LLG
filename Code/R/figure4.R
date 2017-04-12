@@ -10,7 +10,6 @@ isSVD <- 0
 lSize = .8
 legendSize = 1.5
 
-mVec = c(1, 5, 10, 50)
 dZG3Mean = rep(0, length(mVec))
 dZG3L = rep(0, length(mVec))
 dZG3U = rep(0, length(mVec))

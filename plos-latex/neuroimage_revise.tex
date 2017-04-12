@@ -164,11 +164,15 @@ To better illustrate the idea, we take the CoRR brain graphs with Desikan atlase
 \includegraphics[height=.2\textheight]{P_desikan.pdf} \hspace{-35pt}
 \includegraphics[height=.201\textheight]{Abar_desikan_m5.pdf} \hspace{-35pt}
 \includegraphics[height=.205\textheight]{Phat_desikan_m5.pdf}
-\caption{{\bf Heat maps of the population mean, the sample mean, and the estimator $\hat{P}$.}
-These heat maps indicate the population mean for the $454$ graphs (left), sample mean for the 5 sampled graphs (center), and $\hat{P}$ for the 5 sampled graphs with dimension $d=11$ selected using the Zhu and Ghodsi method (right). Details about how to construct $\hat{P}$ are discussed in Section~\ref{sec:phat}.
+\includegraphics[height=.2\textheight]{P_desikan.pdf} \hspace{-35pt}
+\includegraphics[height=.201\textheight]{Abar_desikan_m1.pdf} \hspace{-35pt}
+\includegraphics[height=.205\textheight]{Phat_desikan_m1.pdf}
+\caption{{\bf Heat maps of the population mean $P$, the sample mean $\bar{A}$, and the estimator $\hat{P}$ based on sample sizes $M = 1$ and $M = 5$.}
+The three heat maps in the upper level indicate the population mean for the $454$ graphs (left), sample mean for the 5 sampled graphs (center), and $\hat{P}$ for the same 5 sampled graphs with dimension $d=11$ selected using the Zhu and Ghodsi method (right). Details about how to construct $\hat{P}$ are discussed in Section~\ref{sec:phat}.
 Darker pixels indicate a higher probability of an edge between the given vertices.
-Note that $\hat{P}$ appears to better estimate the true probability matrix $P$, especially for edges between the two hemispheres, in the upper right and corresponding lower left block.
-}
+By calculating the mean squared error based on this sample, we can see that $\hat{P}$ (with mean squared error equals $0.015$) outperforms $\bar{A}$ (with mean squared error equals $0.016$), with a 3\% relative improvement.
+In order to see where the improvements are clearly, in the upper triangular of the heat maps for $\bar{A}$ and $\hat{P}$, we highlight the edges (18 edges highlighted for $\bar{A}$ and 6 for $\hat{P}$) which have absolute estimation error larger than $0.4$.
+In the lower level, we plot three heat maps in the similar way based on sample size $M = 1$. For this specific sampled graph, $\hat{P}$ is calculated with dimension $d = 12$. A clearly smoothing effect can be seen in the heat map of $\hat{P}$ (with mean squared error equals $0.049$), which leads to a 53\% relative improvement compared to $\bar{A}$ (with mean squared error equals $0.104$). Similarly, we use the same absolute estimation error threshold $0.4$ and highlight 504 edges for $\bar{A}$ and 234 edges for $\hat{P}$.}
 \label{fig:Matrix_desikan_m5}
 \end{figure}
 
@@ -176,8 +180,10 @@ Note that $\hat{P}$ appears to better estimate the true probability matrix $P$, 
 
 The element-wise sample mean is a reasonable estimator if we consider the general independent edge model (IEM) \citep{bollobas2007phase} without taking any additional structure into account. 
 However, with only a small sample size, such as when the sample size is much less than the number of vertices, it does not perform very well.
-Now take a sample of size $M=5$ in the CoRR dataset example with Desikan atlases mentioned above, then we calculate the entry-wise sample mean $\bar{A}$ and plot it in the center of Fig.~\ref{fig:Matrix_desikan_m5}. We can see $\bar{A}$ gives a fair estimate of $P$. However, since the sample size is small, there are a lot of pairs of vertices with no edges or 5 edges in the 5 observations. This leads to the white and black pixels in the image corresponding to $\bar{A}$.
-On the other hand, $\hat{P}$ has a finer gradient of values which in this case leads to a more accurate estimate.
+Now take a sample of size $M=5$ in the CoRR dataset example with Desikan atlases mentioned above, then we calculate the entry-wise sample mean $\bar{A}$ and plot it in the top middle panel of Fig.~\ref{fig:Matrix_desikan_m5}. Darker pixels indicate a higher probability of an edge between the given vertices.
+We can see $\bar{A}$ gives a fair estimate of $P$. However, there are still an amount of edges being estimated very inaccurately. In order to see these inaccurate estimates clearly, in the upper triangular of the heat maps for $\bar{A}$, we highlight the 18 edges which have absolute estimation error larger than $0.4$ based on the same color scale.
+When the sample size is small, the performance of $\bar{A}$ degrades due to its high variances. Such phenomenon is most obvious when we decrease the sample size from $M = 5$ to $M = 1$.
+In the bottome middle panel of Fig.~\ref{fig:Matrix_desikan_m5}, we plot the heat map of $\bar{A}$ based on sample size $M = 1$. Since there is only one observed graph, $\bar{A}$ is binary and thus very bumpy. Similarly, we use the same absolute estimation error threshold $0.4$ and highlight 504 edges in the upper triangular.
 Intuitively, an estimator incorporating structure in the distribution of graphs, assuming the estimator is computationally tractable, is preferable to the entry-wise sample mean. 
 In general, we don't have any knowledge about this structure so it can be hard to take advantage of in practice.
 
@@ -190,7 +196,10 @@ One example of an LPM which captures this middle ground is the random dot produc
 % In this paper, we analyze our estimator in terms of RDPG specifically.
 
 Using estimates of the latent positions based on a truncated eigen-decomposition of the adjacency matrix, we propose an estimator which captures the low-rank structure of the mean graph for the RDPG model. Details about this estimator are discussed in Section~\ref{sec:phat}.
-These estimates will improve performance since they will be biased towards the low-rank structure of the RDPG model and will have much lower overall variance than naive element-wise sample means. Here we consider the same random sample of size $M=5$ based on the Desikan atlas in Fig.~\ref{fig:Matrix_desikan_m5} and plot the estimate $\hat{P}$ in the right panel. Note that compared to the sample mean $\bar{A}$, $\hat{P}$ has a finer gradient of values which in this case leads to a more accurate estimate of the true probability matrix $P$, especially for edges between the two hemispheres, in the upper right and corresponding lower left block.
+These estimates will improve performance since they will be biased towards the low-rank structure of the RDPG model and will have much lower overall variance than naive element-wise sample means. Here we consider the same random sample of size $M=5$ based on the Desikan atlas in Fig.~\ref{fig:Matrix_desikan_m5} and plot the estimate $\hat{P}$ in the top right panel. Note that compared to the sample mean $\bar{A}$ (with mean squared error equals $0.016$), $\hat{P}$ (with mean squared error equals $0.015$) has a finer gradient of values which in this case leads to a 3\% relative improvement in estimation of the true probability matrix $P$. In order to see where the improvements are clearly, in the upper triangular of the heat map for $\hat{P}$, we also highlight the 6 edges which have absolute estimation error larger than $0.4$, where 18 edges are highlighted for $\bar{A}$ based on the same threshold. 
+The smoothing effect is much more obvious when we decrease the sample size from $M = 5$ to $M = 1$. In the lower level of Fig.\ref{fig:Matrix_desikan_m5}, we plot the heat map of $\hat{P}$ based on sample size $M = 1$. From the figure, we can see that $\hat{P}$ smooths the estimate, especially for edges across the two hemispheres, in the lower left and corresponding upper right block (which is not shown in the heat map). Based on the calculations, $\hat{P}$ (with mean squared error equals $0.049$) outperforms $\bar{A}$ (with mean squared error equals $0.104$), with a 53\% relative improvement. Similarly, we use the same absolute estimation error threshold $0.4$ and highlight the 234 edges for $\hat{P}$.
+
+
 In this study, we show via theory, simulations, and real data analysis that the low-rank estimator frequently outperforms the element-wise sample mean, especially in small sample sizes.
 
 
@@ -201,7 +210,7 @@ We conclude with a discussion of these results in Section~\ref{sec:discussion}  
 
 \section{Models}
 \label{section:model}
-This work considers the scenario of having $M$ graphs, represented as adjacency matrices, $A^{(1)},A^{(2)},\dotsc,A^{(M)}$, each having $N$ vertices with $A^{(m)}\in\{0,1\}^{N\times N}$ for each $m$..
+This work considers the scenario of having $M$ graphs, represented as adjacency matrices, $A^{(1)},A^{(2)},\dotsc,A^{(M)}$, each having $N$ vertices with $A^{(m)}\in\{0,1\}^{N\times N}$ for each $m$.
 We assume there is a known correspondence for vertices in different graphs, so that vertex $i$ in graph $m$ corresponds to vertex $i$ in graph $m'$ for any $i$, $m$, $m'$.
 The graphs we consider are undirected and unweighted with no self-loops, so each $A^{(m)}$ is a binary symmetric matrix with zeros along the diagonal. 
 In connectomics, the  brain imaging data for each subject can be processed  to output a graph, where each vertex represents a well-defined anatomical region present in each subject.
@@ -241,7 +250,7 @@ Formally, let $\mathcal{X} \subset \Re^d$ be a set such that $x, y \in \mathcal{
 Let $X_1,\dotsc,X_N\in \mathcal{X}$ be the column vectors representing the $N$ latent positions and write $X = [X_1|\cdots|X_N]^{\top} \in \Re^{N \times d}$.
 A random graph $G$ with adjacency matrix $A$ is said to be an RDPG if for any adjacency matrix $a$ of the same size,
 \[
-    \Pr[A = a|X] = \prod_{i<j} (X_i^{\top} X_j)^{a_{ij}} ( 1 - (X_i^{\top} X_j))^{1 - a_{ij}}.
+    \Pr[A = a|X] = \prod_{i<j} (X_i^{\top} X_j)^{a_{ij}} ( 1 - X_i^{\top} X_j)^{1 - a_{ij}}.
 \]
 In the RDPG model, each vertex $i$ is associated with latent position $X_i$, and conditioned on the latent positions $X$, the entries $A_{ij}$ are distributed independently as $ \text{Bernoulli}(X_i^{\top} X_j)$ for $i<j$.
 Note that the probability matrix is the outer product of the latent position matrix with itself, $P = X X^{\top}$.
@@ -255,7 +264,7 @@ These properties lead us to our proposed estimator.
 \label{section:sbm_rdpg}
 One of the most important structures for graphs is the community structure in which vertices are clustered into different communities such that vertices of the same community behave similarly. This structural property is captured by the stochastic blockmodel (SBM) \citep{holland1983stochastic}, where each vertex is assigned to a block and the probability that an edge exists between two vertices depends only on their respective block memberships.
 
-Reviewer 3 mentioned the following references. \cite{ambroise2012new, wolfe2013nonparametric, choi2012stochastic, picard2009deciphering, zanghi2008fast, zanghi2010clustering, pavlovic2014stochastic, daudin2008mixture}.
+% Reviewer 3 mentioned the following references. \cite{ambroise2012new, wolfe2013nonparametric, choi2012stochastic, picard2009deciphering, zanghi2008fast, zanghi2010clustering, pavlovic2014stochastic, daudin2008mixture}.
 
 
 The SBM is parameterized by the number of blocks $K$ (generally much less than the number of vertices $N$), the block probability matrix $B \in [0,1]^{K \times K}$, and the vector of block memberships
@@ -541,7 +550,7 @@ B = \begin{bmatrix}
 \end{bmatrix},
 \label{eq:sim_setting}
 \end{equation}
-so that $|\{i:\tau_i=1\}|=|\{i:\tau_i=2\}|$ for each $N$. (THIS IS NOT TRUE?)
+so that $|\{i:\tau_i=1\}| \approx |\{i:\tau_i=2\}|$, especially for large $N$.
 Note that this simulation only focuses on the rank-2 setting primarily for the interpretability.
 When calculating $\hat{P}$, we omit the dimension selection step from Algorithm~\ref{algo:basic} and instead use the true dimension $d = \mathrm{rank}(B) = 2$.
 Fig.~\ref{fig:RErho} shows $2/\rho_1$ and $1/\rho_1+1/\rho_2$, the scaled asymptotic RE for pairs of vertices both in block one and pairs of vertices in different blocks, respectively, in the 2-block SBM we specified earlier.
@@ -683,7 +692,7 @@ In particular we will use the average of the mean squared error across all pairs
 As in the previous section, we will not use analytical evaluations of the MSE and instead estimate the MSE and relative efficiencies via Monte Carlo simulations.
 % By observing 454 graphs generated by the atlas being picked, we use $\hat{P}$ to estimate the mean graph $P$, which is the proportions of the existence of a white-matter tract connecting different parts of the brain. Since $P$ is unknown in practice, we perform a cross-validation study to compare $\bar{A}$ and $\hat{P}$. For each Monte Carlo replicate, we first fix the sample size $M$ and randomly sample $M$ graphs from the total 454 graphs in the dataset. We assure $M$ to be relatively small such that the entry-wise mean of the remaining $(454 - M)$ graphs is a valid approximation of the true probability matrix $P$ we are estimating. Then we can calculate $\bar{A}$ and $\hat{P}$ based on the $M$ samples and compare their performance based on the estimated probability matrix.
 
-We ran 1000 simulations on each of the three atlases for sample size $M=5,10, 50$. However, for $M=1$, we only have 454 different possibilities. So instead of running 1000 simulations, we looked through all 454 possible sample with size 1.
+We ran 1000 simulations on each of the three atlases for sample size $M=5, 10$. For $M=1$, we only have 454 different possibilities. So instead of running 1000 simulations, we looked through all 454 possible sample with size 1.
 We also considered all possible dimensions for $\hat{P}$ by ranging $d$ from 1 to $N$ in order to investigate the impact of the dimension selection procedures.
 We plot $\hat{\mathrm{MSE}}$ of $\bar{A}$ and $\hat{P}$ in Fig.~\ref{fig:realdata}.
 The horizontal axis gives dimension $d$, which only impacts $\hat{P}$, which is why estimated MSE of $\bar{A}$ is shown as flat.
@@ -702,11 +711,7 @@ With a larger $M$, the performance of $\bar{A}$ improves so that its performance
 
 For a more specific comparison of the performance of $\hat{P}$ and $\bar{A}$ in the most realistic situation where the rank $d$ must be chosen based on data, Table~\ref{tab:corr_re} shows estimated relative efficiencies of $\hat{P}$ versus $\bar{A}$.
 For each atlas and each sample size, we compare the Zhu and Ghodsi method \citep{zhu2006automatic} with the USVT method \citep{chatterjee2015matrix} and note that both perform reasonably well relative to the full-dimensional $\bar{A}$.
-For $M = 1, 5, 10$, all confidence intervals (calculated by assuming a normal distribution) had lengths less than $0.008$, while for $M=50$ the confidence intervals had length less than $0.046$, and hence we omitted them for clarity. Overall, the relative efficiencies are greater for smaller sample sizes $M$ and larger number of vertices $N$. Although for $M=50$ the RE is large, from Table~\ref{tab:corr_mse} we can see this is due to the small MSE of $\bar{A}$ as the denominator. In this case the actual difference of the performance between $\bar{A}$ and $\hat{P}$ is quite small.
-%indicating that all relative efficiencies, aside from the relative efficiency for the CPAC200 atlas at $M=10$ and $M = 50$, are very different from 1.
-
-For $M = 1, 5, 10$, all confidence intervals had lengths less than $0.008$, while for $M=50$ the confidence intervals had length less than $0.046$, and hence we omitted them for clarity.
-    Overall, the relative efficiencies are greater for smaller sample sizes $M$ and larger number of vertices $N$. Although for $M=50$ the RE is large, from Table~\ref{tab:corr_mse} we can see this is due to the small MSE of $\bar{A}$ as the denominator. In this case the actual difference of the performance between $\bar{A}$ and $\hat{P}$ is quite small.
+We omit confidence intervals for the estimated relative efficiencies since all confidence intervals had lengths less than $0.015$, indicating that all relative efficiencies, aside from the relative efficiency for the CPAC200 atlas at $M=10$, are very different from 1.
 
 Again we can see that the largest improvements using $\hat{P}$ occur when $M$ is small and $N$ is large. 
 On the other hand, once $M=10$, $\bar{A}$ tends to do nearly as well or better than $\hat{P}$. 
@@ -732,15 +737,15 @@ These plots show the mean squared error for $\bar{A}$ (solid line) and $\hat{P}$
     \centering
 \begin{tabular}{lcccc}\toprule
         % & $m=1$  & $m=5$  & $m=10$ \\\toprule
-\multicolumn{1}{l}{\textbf{JHU}} & $M=1$  & $M=5$  & $M=10$ & $M=50$  \\\midrule
-ZG      & 0.053 & 0.004 & -0.002 & -0.006  \\
-USVT    & 0.051 & 0.004 & -0.001 & -0.007 \\\midrule
-\multicolumn{1}{l}{\textbf{Desikan}} & $M=1$  & $M=5$  & $M=10$ & $M=50$  \\ \midrule
-ZG      & 0.053 & 0.004 & -0.002 & -0.007 \\
-USVT    & 0.056 & 0.004 & -0.001 & -0.006 \\\midrule
-\multicolumn{1}{l}{\textbf{CPAC200}} & $M=1$  & $M=5$  & $M=10$ & $M=50$  \\\midrule
-ZG      & 0.037 & 0.005 & 0.001 & -0.002 \\
-USVT    & 0.036 & 0.003 & 0.000 & -0.003 \\\bottomrule
+\multicolumn{1}{l}{\textbf{JHU}} & $M=1$  & $M=5$  & $M=10$ \\\midrule
+ZG      & 0.053 & 0.004 & -0.002 \\
+USVT    & 0.051 & 0.004 & -0.001 \\\midrule
+\multicolumn{1}{l}{\textbf{Desikan}} & $M=1$  & $M=5$  & $M=10$ \\ \midrule
+ZG      & 0.053 & 0.004 & -0.002 \\
+USVT    & 0.056 & 0.004 & -0.001 \\\midrule
+\multicolumn{1}{l}{\textbf{CPAC200}} & $M=1$  & $M=5$  & $M=10$  \\\midrule
+ZG      & 0.037 & 0.005 & 0.001 \\
+USVT    & 0.036 & 0.003 & 0.000 \\\bottomrule
 \end{tabular}
     \caption{{\bf Difference between $\hat{\mathrm{MSE}}$ of $\bar{A}$ and $\hat{\mathrm{MSE}}$ of $\hat{P}$ for three atlases at four sample sizes for the CoRR data.}
     To give concrete numbers of the experiment results displayed in Fig.~\ref{fig:realdata}, we list $\hat{\mathrm{MSE}}$ of $\bar{A}$ minus $\hat{\mathrm{MSE}}$ of $\hat{P}$ in the table. A positive number means $\hat{P}$ outperforms $\bar{A}$.
@@ -758,22 +763,22 @@ USVT    & 0.036 & 0.003 & 0.000 & -0.003 \\\bottomrule
     \centering
 \begin{tabular}{lcccc}\toprule
         % & $m=1$  & $m=5$  & $m=10$ \\\toprule
-\multicolumn{1}{l}{\textbf{JHU}} & $M=1$  & $M=5$  & $M=10$ & $M=50$  \\\midrule
-ZG      & 0.54 & 0.81 & 1.14 & 3.44  \\
-USVT    & 0.57 & 0.85 & 1.12 & 3.62 \\\midrule
-\multicolumn{1}{l}{\textbf{Desikan}} & $M=1$  & $M=5$  & $M=10$ & $M=50$  \\ \midrule
-ZG      & 0.53 & 0.81 & 1.15 & 3.76 \\
-USVT    & 0.50 & 0.81 & 1.09 & 3.34 \\\midrule
-\multicolumn{1}{l}{\textbf{CPAC200}} & $M=1$  & $M=5$  & $M=10$ & $M=50$  \\\midrule
-ZG      & 0.52 & 0.69 & 0.90 & 2.44 \\
-USVT    & 0.53 & 0.80 & 0.99 & 2.54 \\\bottomrule
+\multicolumn{1}{l}{\textbf{JHU}} & $M=1$  & $M=5$  & $M=10$ \\\midrule
+ZG      & 0.54 & 0.81 & 1.14  \\
+USVT    & 0.57 & 0.85 & 1.12 \\\midrule
+\multicolumn{1}{l}{\textbf{Desikan}} & $M=1$  & $M=5$  & $M=10$ \\ \midrule
+ZG      & 0.53 & 0.81 & 1.15 \\
+USVT    & 0.50 & 0.81 & 1.09 \\\midrule
+\multicolumn{1}{l}{\textbf{CPAC200}} & $M=1$  & $M=5$  & $M=10$ \\\midrule
+ZG      & 0.52 & 0.69 & 0.90 \\
+USVT    & 0.53 & 0.80 & 0.99 \\\bottomrule
 \end{tabular}
     \caption{{\bf Relative efficiencies of $\bar{A}$ versus $\hat{P}$ for the CoRR data set.}
     For each atlas, JHU, Desikan, and CPAC 200, we sampled graphs which we used to compute $\bar{A}$ and $\hat{P}$.
      We compared different sample sizes $M$ and different dimension selection procedures, ZG and USVT.
     For each of the two methods for computing $\hat{P}$, we estimated their relative efficiencies with respect to the sample mean $\bar{A}$.
-    For $M = 1, 5, 10$, all confidence intervals had lengths less than $0.008$, while for $M=50$ the confidence intervals had length less than $0.046$, and hence we omitted them for clarity.
-    Overall, the relative efficiencies are greater for smaller sample sizes $M$ and larger number of vertices $N$. Although for $M=50$ the RE is large, from Table~\ref{tab:corr_mse} we can see this is due to the small MSE of $\bar{A}$ as the denominator. In this case the actual difference of the performance between $\bar{A}$ and $\hat{P}$ is quite small.
+    Confidence intervals all had lengths less than $0.015$, and hence we omitted them for clarity.
+    Overall, the relative efficiencies are greater for smaller sample sizes $M$ and larger number of vertices $N$.
     } 
     \label{tab:corr_re}
 \end{table}
@@ -784,43 +789,36 @@ USVT    & 0.53 & 0.80 & 0.99 & 2.54 \\\bottomrule
 
 To further illustrate the differences between the two estimators, we considered a single random sample of size $M=5$ based on the Desikan atlas.
 We calculated $\bar{A}$ and $\hat{P}$, using  Zhu and Ghodsi's 3rd elbow to select $d=11$. 
-In Fig.~\ref{fig:Matrix_desikan_m5}, the estimates $\bar{A}$ and $\hat{P}$ as well as the sample mean of 454 graphs (as a close estimate of $P$) are plotted. 
+In Fig.~\ref{fig:Matrix_desikan_m5}, the estimates $\bar{A}$ and $\hat{P}$ as well as the sample mean of 454 graphs (as a close estimate of $P$) are plotted in the upper level. 
 Since the sample size is small, there are a lot of pairs of vertices with no edges or 5 edges in the 5 observations.
 This leads to the white and black pixels in the image corresponding to $\bar{A}$.
 On the other hand, $\hat{P}$ has a finer gradient of values which in this case leads to a more accurate estimate.
+By calculating the mean squared error based on this sample, we can see that $\hat{P}$ (with mean squared error equals $0.015$) outperforms $\bar{A}$ (with mean squared error equals $0.016$), with a 3\% relative improvement.
+In order to see where the improvements are clearly, in the upper triangular of the heat maps for $\bar{A}$ and $\hat{P}$, we highlight the edges (18 edges highlighted for $\bar{A}$ and 6 for $\hat{P}$) which have absolute estimation error larger than $0.4$.
+
 
 Moreover, for the same sample discussed above, Fig.~\ref{fig:Diff_desikan_m5} shows the values for the absolute estimation error $|\bar{A} - P|$ and $|\hat{P}-P|$. In addition, we include the absolute difference $|\bar{A} - \hat{P}|$ to show the overall difference between the two estimates. The lower triangular sections show the actual absolute difference while the upper triangular matrix highlights the vertex pairs with absolute differences larger than 0.4. 
 There are 18 edges from $\bar{A}$ and 6 edges from $\hat{P}$ being highlighted in the figure, further indicating the superior performance of $\hat{P}$.
 Note that approximately $13\%$ of all pairs of vertices are adjacent in all $454$ graphs and hence $\bar{A}$ will always have zero error for those pairs of vertices.
 Nonetheless, $\hat{P}$ typically outperforms $\bar{A}$.
 
-To investigate the difference in performance with respect to the geometry of the brain, 
-in Fig.~\ref{fig:Diff_between_desikan} we plot the 50 edges with the largest differences $|\bar{A}_{ij} - P_{ij}| - |\hat{P}_{ij} - P_{ij}|$ according to the location of the corresponding regions in the brain. Red edges indicate that $\hat{P}$ overestimates $P$, while blue means that $\hat{P}$ underestimates $P$. The edge width is determined by the estimation error for $\hat{P}$, where pairs with larger estimation error are represented by thicker lines.
-We also highlight the five regions corresponding to vertices that contribute most to the difference, meaning the vertices $i$ with the largest value of $\sum_j (|\bar{A}_{ij} - P_{ij}| - |\hat{P}_{ij} - P_{ij}|)$.
-Notably, three of these top five regions form a contiguous group of regions.
-The top five regions are the inferior temporal, middle temporal, and transverse temporal regions in the left hemisphere and the parahippocampal and parsopercularis regions in the right hemisphere of the Desikan atlas.
-
-These results demonstrate that for small sample sizes, such as $M=1$ or $M=5$, and for the atlases with a larger number of vertices, $\hat{P}$ gives a better estimate than $\bar{A}$ for the CoRR dataset.
-Importantly, this improvement is robust to the embedding dimension provided the dimension is not underestimated.
-We should note that though the total error for $\hat{P}$ is smaller in this case, for certain entries $\bar{A}$ does perform better.
-For example, there are some pairs of vertices that are adjacent for all samples in the population and for these pairs $\bar{A}$ will always perform better than $\hat{P}$. 
-
-
-
 \begin{figure}
-
 \begin{center}
-  \includegraphics[height=.33\linewidth]{Diff2_desikan_m5.pdf}\hspace{-40pt}
+  \includegraphics[height=.325\linewidth]{Diff2_desikan_m5.pdf}\hspace{-40pt}
   \includegraphics[height=.33\linewidth]{Diff3_desikan_m5.pdf}\hspace{-32pt}
   \includegraphics[height=.33\linewidth]{Diff1_desikan_m5.pdf}
 \end{center}
-
-\caption{{\bf Heat plot of absolute estimation error for $\bm{\bar{A}}$ and $\bm{\hat{P}}$ (lower triangle) and absolute errors above 0.4 (upper triangle).}
+\caption{{\bf Heat plots of absolute estimation error for $\bm{\bar{A}}$ and $\bm{\hat{P}}$ (lower triangle) and absolute errors above 0.4 (upper triangle).}
 These heat plots show the absolute estimation error $|\bar{A} - P|$, $|\hat{P} - P|$ and $|\bar{A} - \hat{P}|$ for a sample of size $M=5$ from the Desikan dataset.
-The embedding dimension for $\hat{P}$ is $d=11$ selected by the 3rd elbow of the ZG method. The lower triangular matrix shows the actual absolute difference, while the upper triangular matrix only highlights the edges with absolute differences larger than $0.4$. The fact that 18 edges from $\bar{A}$ are highlighted and only six edges from $\hat{P}$ are highlighted indicates that $\hat{P}$ has fewer large outliers compared to $\bar{A}$.
+The embedding dimension for $\hat{P}$ is $d=11$ selected by the 3rd elbow of the ZG method. The lower triangular matrix shows the actual absolute difference, while the upper triangular matrix only highlights the edges with absolute differences larger than $0.4$. The fact that 18 edges from $\bar{A}$ are highlighted and only 6 edges from $\hat{P}$ are highlighted indicates that $\hat{P}$ has fewer large outliers compared to $\bar{A}$.
 }
 \label{fig:Diff_desikan_m5}
 \end{figure}
+
+To investigate the difference in performance with respect to the geometry of the brain, in Fig.~\ref{fig:Diff_between_desikan} we plot the 50 edges with the largest differences $|\bar{A}_{ij} - P_{ij}| - |\hat{P}_{ij} - P_{ij}|$ according to the location of the corresponding regions in the brain. Red edges indicate that $\hat{P}$ overestimates $P$, while blue means that $\hat{P}$ underestimates $P$. The edge width is determined by the estimation error for $\hat{P}$, where pairs with larger estimation error are represented by thicker lines.
+We also highlight the five regions corresponding to vertices that contribute most to the difference, meaning the vertices $i$ with the largest value of $\sum_j (|\bar{A}_{ij} - P_{ij}| - |\hat{P}_{ij} - P_{ij}|)$.
+Notably, three of these top five regions form a contiguous group of regions.
+The top five regions are the inferior temporal, middle temporal, and transverse temporal regions in the left hemisphere and the parahippocampal and parsopercularis regions in the right hemisphere of the Desikan atlas.
 
 \begin{figure}[!htbp]
 \centering
@@ -829,6 +827,21 @@ The embedding dimension for $\hat{P}$ is $d=11$ selected by the 3rd elbow of the
 Red edges indicate that $\hat{P}$ overestimate $P$ while blue means that $\hat{P}$ underestimates $P$. The edge width is determined by the estimation error. Connections with larger estimation error are represented by thicker lines. This figure shows the regions and connections of the brain where $\hat{P}$ outperforms $\bar{A}$ the most for estimating $P$.}
 \label{fig:Diff_between_desikan}
 \end{figure}
+
+We plot the histogram of $P$, i.e. the entry-wise mean of all 454 graphs based on the Desikan atlas, as in Fig.~\ref{fig:P_hist_desikan}. Clearly we can see more edge probabilities are concentrated on both sides, i.e. close to 0 or 1. In particular, 12.8\% of the edges has probability equals to 1 exactly. For these edges, MLE $\bar{A}$ always recover the probability 1 exactly even with only 1 observation, while $\hat{P}$ will give a less accurate estimate because of the smoothing effect. So the CoRR dataset we consider is highly preferable to $\bar{A}$ compared to $\hat{P}$. However, even in this situation, $\hat{P}$ still outperforms $\bar{A}$ when the sample size is relatively small.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=1\textwidth]{P_hist_desikan.pdf}
+\caption{{\bf Histogram of $P$ for Desikan atlas.}
+This figure shows the histogram of $P$, i.e. the entry-wise mean of all 454 graphs based on the Desikan atlas. More edge probabilities of $P$ are concentrated on both sides, i.e. close to 0 or 1. In particular, 12.8\% of the edges has probability equals to 1 exactly.}
+\label{fig:P_hist_desikan}
+\end{figure}
+
+These results demonstrate that for small sample sizes, such as $M=1$ or $M=5$, and for the atlases with a larger number of vertices, $\hat{P}$ gives a better estimate than $\bar{A}$ for the CoRR dataset.
+Importantly, this improvement is robust to the embedding dimension provided the dimension is not underestimated.
+We should note that though the total error for $\hat{P}$ is smaller in this case, for certain entries $\bar{A}$ does perform better.
+For example, there are some pairs of vertices that are adjacent for all samples in the population and for these pairs $\bar{A}$ will always perform better than $\hat{P}$. 
 
 
 %\begin{figure}[!htbp]
@@ -936,7 +949,7 @@ Now we take the CoRR dataset experiment as an example and consider the same samp
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=.8\textwidth]{eigenvector.pdf}
+\includegraphics[width=.7\textwidth]{eigenvector.pdf}
 \caption{{\bf Heat map of $\hat{X}$.}
 Heat map of $\hat{X}$ with each row to be the estimated latent position for the corresponding vertex. From the second column, we can see a clear distinction of the left and right hemisphere as conveyed in the second dimension.}
 \label{fig:eigenvector}
